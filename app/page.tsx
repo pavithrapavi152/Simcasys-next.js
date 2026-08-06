@@ -1,13 +1,96 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+const menu = [
+  ["Home", "#home"],
+  ["About Us", "#about"],
+  ["Services", "#services"],
+  ["Careers", "#careers"],
+  ["Blogs", "#blogs"],
+  ["Contact Us", "#contact"],
+];
+
+const services = [
+  {
+    image: "/services1.jpg",
+    title: "Consulting Services",
+    description:
+      "We provide expert technology consulting to help organizations align digital strategies with business objectives. Our team evaluates existing systems, identifies improvement opportunities, and recommends scalable solutions. By combining technical expertise with industry insights, we help businesses drive innovation, efficiency, and sustainable growth.",
+  },
+  {
+    image: "/services2.png",
+    title: "Fintech Product Development",
+    description:
+      "We develop secure and scalable fintech solutions for modern financial services. Our expertise includes payment systems, digital wallets, banking platforms, and financial analytics tools. With strong security and compliance practices, we help organizations build reliable financial products that deliver seamless user experiences.",
+  },
+  {
+    image: "/services3.jpg",
+    title: "Healthcare IT Solutions",
+    description:
+      "Our healthcare IT solutions support hospitals and healthcare providers with secure, efficient digital systems. We build platforms for electronic health records, telemedicine, and healthcare management. These solutions enhance operational efficiency, improve patient care, and ensure compliance with healthcare standards.",
+  },
+  {
+    image: "/services4.jpg",
+    title: "Retail and E-commerce",
+    description:
+      "We create advanced retail and e-commerce platforms that enhance customer experiences and operational efficiency. Using data analytics, AI, and modern technologies, we enable businesses to better understand customer behavior and optimize their sales strategies in a competitive digital marketplace.",
+  },
+  {
+    image: "/services5.jpg",
+    title: "Cloud and DevOps",
+    description:
+      "Our cloud and DevOps services help organizations modernize infrastructure and accelerate software delivery. We design scalable cloud architectures, implement automated deployment pipelines, and optimize system performance. This enables businesses to deliver reliable applications with greater speed and efficiency.",
+  },
+  {
+    image: "/services6.png",
+    title: "Mobile App Development",
+    description:
+      "We design and develop high-performance mobile applications tailored to modern business needs. Our solutions focus on intuitive user experiences, secure integrations, and scalable architectures. These applications help organizations connect with customers and expand their digital presence.",
+  },
+  {
+    image: "/services7.jpg",
+    title: "Intership Programs",
+    description:
+      "Our internship programs provide students and graduates with valuable industry experience. Participants work on real-world projects while learning modern development tools and practices. Through mentorship and hands-on training, we help prepare the next generation of technology professionals.",
+  },
+  {
+    image: "/services8.avif",
+    title: "IT Support and Maintenance",
+    description:
+      "We provide comprehensive IT support and maintenance services to ensure systems remain secure, stable, and efficient. Our team monitors infrastructure, resolves technical issues, and performs regular updates. This proactive approach minimizes downtime and keeps business operations running smoothly.",
+  },
+];
+
+const life = [
+  [
+    "/life1.jpeg",
+    "Restart with Simcasys",
+    "Restart with Simcasys is a launchpad for professionals. This is an opportunity to learn new skills and build digital capabilities in the latest and emerging technologies.",
+  ],
+  [
+    "/life2.jpeg",
+    "LEARNING EXPERIENCE (LEX)",
+    "We hire minds that think and hearts that care. Our employees grow into leaders, not just roles. That's how Simcasys moves forward.",
+  ],
+  [
+    "/life3.jpg",
+    "CULTURE",
+    "A culture that encourages learning and innovation. Employees grow through teamwork and shared goals. Success is built together.",
+  ],
+];
+
 export default function Home() {
   const words = ["Succeed", "Create", "Collaborate"];
+
   const [wordIndex, setWordIndex] = useState(0);
+
+  // Stores the service currently opened
+  const [selectedService, setSelectedService] = useState<number | null>(
+    null
+  );
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -20,18 +103,12 @@ export default function Home() {
   return (
     <main className="w-full min-h-screen scroll-smooth">
 
-      {/* ================================================= */}
-      {/* HEADER */}
-      {/* ================================================= */}
+      {/* ================= HEADER ================= */}
 
       <header className="fixed top-0 left-0 z-50 w-full bg-white shadow-md">
-
         <div className="w-full h-16 px-8 flex items-center justify-between">
 
-          {/* LOGO */}
-
           <div className="flex items-center gap-3">
-
             <Image
               src="/simcasys.svg"
               alt="SIMCASYS Logo"
@@ -43,73 +120,30 @@ export default function Home() {
             <span className="text-xl font-bold text-black">
               SIMCASYS
             </span>
-
           </div>
 
-
-          {/* MENU */}
-
           <nav className="flex items-center gap-7">
-
-            <Link
-              href="#home"
-              className="font-semibold text-black hover:text-green-600"
-            >
-              Home
-            </Link>
-
-            <Link
-              href="#about"
-              className="font-semibold text-black hover:text-green-600"
-            >
-              About Us
-            </Link>
-
-            <Link
-              href="#services"
-              className="font-semibold text-black hover:text-green-600"
-            >
-              Services
-            </Link>
-
-            <Link
-              href="#careers"
-              className="font-semibold text-black hover:text-green-600"
-            >
-              Careers
-            </Link>
-
-            <Link
-              href="#blogs"
-              className="font-semibold text-black hover:text-green-600"
-            >
-              Blogs
-            </Link>
-
-            <Link
-              href="#contact"
-              className="font-semibold text-black hover:text-green-600"
-            >
-              Contact Us
-            </Link>
-
+            {menu.map(([name, href]) => (
+              <Link
+                key={name}
+                href={href}
+                className="font-semibold text-black hover:text-green-600"
+              >
+                {name}
+              </Link>
+            ))}
           </nav>
 
         </div>
-
       </header>
 
 
-      {/* ================================================= */}
-      {/* HOME */}
-      {/* ================================================= */}
+      {/* ================= HOME ================= */}
 
       <section
         id="home"
         className="relative w-full min-h-screen flex items-center justify-center scroll-mt-16"
       >
-
-        {/* BACKGROUND IMAGE */}
 
         <Image
           src="/background.png"
@@ -119,16 +153,9 @@ export default function Home() {
           className="object-cover"
         />
 
-        {/* DARK OVERLAY */}
-
-        <div className="absolute inset-0 bg-black/30"></div>
-
-
-        {/* HOME CONTENT */}
+        <div className="absolute inset-0 bg-black/30" />
 
         <div className="relative z-10 text-center px-6">
-
-          {/* MAIN HEADING */}
 
           <h1 className="text-4xl md:text-5xl font-bold">
 
@@ -142,43 +169,30 @@ export default function Home() {
 
           </h1>
 
-
-          {/* ANIMATED WORD */}
-
           <div className="mt-5 h-10 flex items-center justify-center">
 
-            <span
-              key={words[wordIndex]}
-              className="text-orange-400 font-semibold text-xl animate-fadeIn"
-            >
+            <span className="text-orange-400 font-semibold text-xl">
               {words[wordIndex]}
             </span>
 
           </div>
 
-
-          {/* COMPANY NAME */}
-
           <p className="text-xl text-white">
             SIMCASYS TECHNOLOGIES
           </p>
-
-
-          {/* BUTTONS */}
 
           <div className="mt-8 flex justify-center gap-5">
 
             <Link
               href="#services"
-              className="rounded-lg border-2 border-white bg-white/10 px-7 py-3 font-semibold text-white backdrop-blur-sm transition hover:bg-white hover:text-black"
+              className="rounded-lg border-2 border-white bg-white/10 px-7 py-3 font-semibold text-white backdrop-blur-sm hover:bg-white hover:text-black"
             >
               Our Services
             </Link>
 
-
             <Link
               href="#contact"
-              className="rounded-lg border-2 border-white bg-white/10 px-7 py-3 font-semibold text-white backdrop-blur-sm transition hover:bg-white hover:text-black"
+              className="rounded-lg border-2 border-white bg-white/10 px-7 py-3 font-semibold text-white backdrop-blur-sm hover:bg-white hover:text-black"
             >
               Contact Us
             </Link>
@@ -186,41 +200,27 @@ export default function Home() {
           </div>
 
         </div>
-
       </section>
 
 
-      {/* ================================================= */}
-      {/* ABOUT US */}
-      {/* ================================================= */}
+      {/* ================= ABOUT ================= */}
 
       <section
         id="about"
         className="w-full bg-white px-8 py-20 scroll-mt-16"
       >
 
-        {/* FIRST ABOUT SECTION */}
-
         <div className="max-w-6xl mx-auto min-h-screen flex items-center">
 
           <div className="w-full grid grid-cols-2 gap-12 items-center">
 
-            {/* IMAGE */}
-
-            <div className="w-full h-[420px]">
-
-              <Image
-                src="/about1.png"
-                alt="Our Mission"
-                width={700}
-                height={500}
-                className="w-full h-full object-cover rounded-xl"
-              />
-
-            </div>
-
-
-            {/* CONTENT */}
+            <Image
+              src="/about1.png"
+              alt="Our Mission"
+              width={700}
+              height={500}
+              className="w-full h-[420px] object-cover rounded-xl"
+            />
 
             <div className="bg-[#fffaf0] p-8 rounded-xl">
 
@@ -263,17 +263,12 @@ export default function Home() {
             </div>
 
           </div>
-
         </div>
 
-
-        {/* SECOND ABOUT SECTION */}
 
         <div className="max-w-6xl mx-auto min-h-screen flex items-center">
 
           <div className="w-full grid grid-cols-2 gap-12 items-center">
-
-            {/* CONTENT */}
 
             <div className="bg-[#fffaf0] p-8 rounded-xl">
 
@@ -316,31 +311,21 @@ export default function Home() {
 
             </div>
 
-
-            {/* IMAGE */}
-
-            <div className="w-full h-[420px]">
-
-              <Image
-                src="/about2.jpg"
-                alt="Our Culture"
-                width={700}
-                height={500}
-                className="w-full h-full object-cover rounded-xl"
-              />
-
-            </div>
+            <Image
+              src="/about2.jpg"
+              alt="Our Culture"
+              width={700}
+              height={500}
+              className="w-full h-[420px] object-cover rounded-xl"
+            />
 
           </div>
-
         </div>
 
       </section>
 
 
-      {/* ================================================= */}
-      {/* SERVICES */}
-      {/* ================================================= */}
+      {/* ================= SERVICES ================= */}
 
       <section
         id="services"
@@ -362,311 +347,153 @@ export default function Home() {
           </h2>
 
 
-          <div className="mt-10 grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-4">
+          {/* ==================================================
+              NORMAL SERVICES CARDS
+              ================================================== */}
+
+          {selectedService === null && (
+
+            <div className="mt-10 grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-4">
+
+              {services.map((service, index) => (
+
+                <div
+                  key={service.title}
+                  className="group relative overflow-hidden rounded-2xl bg-white shadow-sm"
+                >
+
+                  <div className="relative h-[280px] w-full">
+
+                    <Image
+                      src={service.image}
+                      alt={service.title}
+                      fill
+                      className="object-cover transition duration-500 group-hover:scale-105"
+                    />
+
+                    <div className="absolute inset-0 bg-black/20" />
+
+                    <div className="absolute inset-x-0 bottom-0 p-5">
+
+                      <h2 className="pr-12 text-xl font-bold text-white">
+                        {service.title}
+                      </h2>
+
+                    </div>
 
 
-            {/* SERVICE 1 */}
+                    {/* GREEN ARROW BUTTON */}
 
-            <div className="group relative overflow-hidden rounded-2xl bg-white shadow-sm">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedService(index)}
+                      className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-md bg-green-600 text-xl font-bold text-white hover:bg-green-700"
+                    >
+                      →
+                    </button>
 
-              <div className="relative h-[280px] w-full">
-
-                <Image
-                  src="/services1.jpg"
-                  alt="Consulting Services"
-                  fill
-                  className="object-cover transition duration-500 group-hover:scale-105"
-                />
-
-                <div className="absolute inset-0 bg-black/20"></div>
-
-                <div className="absolute inset-x-0 bottom-0 p-5">
-
-                  <h2 className="pr-12 text-xl font-bold text-white">
-                    Consulting Services
-                  </h2>
+                  </div>
 
                 </div>
 
-                <Link
-                  href="/services/consulting-services"
-                  className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-green-600 text-xl font-bold text-white hover:bg-green-700"
+              ))}
+
+            </div>
+
+          )}
+
+
+          {/* ==================================================
+              SELECTED SERVICE DETAIL
+              ================================================== */}
+
+          {selectedService !== null && (
+
+            <div className="mt-10">
+
+              <div className="relative bg-white rounded-2xl shadow-sm p-8">
+
+
+                {/* MULTIPLICATION / CLOSE BUTTON */}
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedService(null)}
+                  aria-label="Close service details"
+                  className="absolute top-5 right-5 w-9 h-9 flex items-center justify-center rounded-full text-black text-2xl hover:bg-gray-100"
                 >
-                  →
-                </Link>
+                  ×
+                </button>
+
+
+                {/* IMAGE + SERVICE CONTENT */}
+
+                <div className="min-h-[550px] grid grid-cols-2 gap-12 items-center">
+
+
+                  {/* SERVICE IMAGE */}
+
+                  <div className="w-full h-[430px]">
+
+                    <Image
+                      src={services[selectedService].image}
+                      alt={services[selectedService].title}
+                      width={800}
+                      height={600}
+                      className="w-full h-full object-cover rounded-xl"
+                    />
+
+                  </div>
+
+
+                  {/* SERVICE DESCRIPTION */}
+
+                  <div className="pr-8">
+
+                    <h2 className="text-4xl font-bold leading-tight mb-7">
+
+                      <span className="text-black">
+                        {services[selectedService].title.split(" ")[0]}{" "}
+                      </span>
+
+                      <span className="text-green-600">
+                        {services[selectedService].title
+                          .split(" ")
+                          .slice(1)
+                          .join(" ")}
+                      </span>
+
+                    </h2>
+
+                    <p className="text-gray-700 text-lg leading-8">
+                      {services[selectedService].description}
+                    </p>
+
+                  </div>
+
+                </div>
 
               </div>
 
             </div>
 
-
-            {/* SERVICE 2 */}
-
-            <div className="group relative overflow-hidden rounded-2xl bg-white shadow-sm">
-
-              <div className="relative h-[280px] w-full">
-
-                <Image
-                  src="/services2.png"
-                  alt="Fintech Product Development"
-                  fill
-                  className="object-cover transition duration-500 group-hover:scale-105"
-                />
-
-                <div className="absolute inset-0 bg-black/20"></div>
-
-                <div className="absolute inset-x-0 bottom-0 p-5">
-
-                  <h2 className="pr-12 text-xl font-bold text-white">
-                    Fintech Product Development
-                  </h2>
-
-                </div>
-
-                <Link
-                  href="/services/fintech-product-development"
-                  className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-green-600 text-xl font-bold text-white hover:bg-green-700"
-                >
-                  →
-                </Link>
-
-              </div>
-
-            </div>
-
-
-            {/* SERVICE 3 */}
-
-            <div className="group relative overflow-hidden rounded-2xl bg-white shadow-sm">
-
-              <div className="relative h-[280px] w-full">
-
-                <Image
-                  src="/services3.jpg"
-                  alt="Healthcare IT Solutions"
-                  fill
-                  className="object-cover transition duration-500 group-hover:scale-105"
-                />
-
-                <div className="absolute inset-0 bg-black/20"></div>
-
-                <div className="absolute inset-x-0 bottom-0 p-5">
-
-                  <h2 className="pr-12 text-xl font-bold text-white">
-                    Healthcare IT Solutions
-                  </h2>
-
-                </div>
-
-                <Link
-                  href="/services/healthcare-it-solutions"
-                  className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-green-600 text-xl font-bold text-white hover:bg-green-700"
-                >
-                  →
-                </Link>
-
-              </div>
-
-            </div>
-
-
-            {/* SERVICE 4 */}
-
-            <div className="group relative overflow-hidden rounded-2xl bg-white shadow-sm">
-
-              <div className="relative h-[280px] w-full">
-
-                <Image
-                  src="/services4.jpg"
-                  alt="Retail and E-commerce"
-                  fill
-                  className="object-cover transition duration-500 group-hover:scale-105"
-                />
-
-                <div className="absolute inset-0 bg-black/20"></div>
-
-                <div className="absolute inset-x-0 bottom-0 p-5">
-
-                  <h2 className="pr-12 text-xl font-bold text-white">
-                    Retail and E-commerce
-                  </h2>
-
-                </div>
-
-                <Link
-                  href="/services/retail-ecommerce"
-                  className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-green-600 text-xl font-bold text-white hover:bg-green-700"
-                >
-                  →
-                </Link>
-
-              </div>
-
-            </div>
-
-
-            {/* SERVICE 5 */}
-
-            <div className="group relative overflow-hidden rounded-2xl bg-white shadow-sm">
-
-              <div className="relative h-[280px] w-full">
-
-                <Image
-                  src="/services5.jpg"
-                  alt="Cloud and DevOps"
-                  fill
-                  className="object-cover transition duration-500 group-hover:scale-105"
-                />
-
-                <div className="absolute inset-0 bg-black/20"></div>
-
-                <div className="absolute inset-x-0 bottom-0 p-5">
-
-                  <h2 className="pr-12 text-xl font-bold text-white">
-                    Cloud and DevOps
-                  </h2>
-
-                </div>
-
-                <Link
-                  href="/services/cloud-devops"
-                  className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-green-600 text-xl font-bold text-white hover:bg-green-700"
-                >
-                  →
-                </Link>
-
-              </div>
-
-            </div>
-
-
-            {/* SERVICE 6 */}
-
-            <div className="group relative overflow-hidden rounded-2xl bg-white shadow-sm">
-
-              <div className="relative h-[280px] w-full">
-
-                <Image
-                  src="/services6.png"
-                  alt="Mobile App Development"
-                  fill
-                  className="object-cover transition duration-500 group-hover:scale-105"
-                />
-
-                <div className="absolute inset-0 bg-black/20"></div>
-
-                <div className="absolute inset-x-0 bottom-0 p-5">
-
-                  <h2 className="pr-12 text-xl font-bold text-white">
-                    Mobile App Development
-                  </h2>
-
-                </div>
-
-                <Link
-                  href="/services/mobile-app-development"
-                  className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-green-600 text-xl font-bold text-white hover:bg-green-700"
-                >
-                  →
-                </Link>
-
-              </div>
-
-            </div>
-
-
-            {/* SERVICE 7 */}
-
-            <div className="group relative overflow-hidden rounded-2xl bg-white shadow-sm">
-
-              <div className="relative h-[280px] w-full">
-
-                <Image
-                  src="/services7.jpg"
-                  alt="Intership Programs"
-                  fill
-                  className="object-cover transition duration-500 group-hover:scale-105"
-                />
-
-                <div className="absolute inset-0 bg-black/20"></div>
-
-                <div className="absolute inset-x-0 bottom-0 p-5">
-
-                  <h2 className="pr-12 text-xl font-bold text-white">
-                    Intership Programs
-                  </h2>
-
-                </div>
-
-                <Link
-                  href="/services/intership-programs"
-                  className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-green-600 text-xl font-bold text-white hover:bg-green-700"
-                >
-                  →
-                </Link>
-
-              </div>
-
-            </div>
-
-
-            {/* SERVICE 8 */}
-
-            <div className="group relative overflow-hidden rounded-2xl bg-white shadow-sm">
-
-              <div className="relative h-[280px] w-full">
-
-                <Image
-                  src="/services8.avif"
-                  alt="IT Support and Maintenance"
-                  fill
-                  className="object-cover transition duration-500 group-hover:scale-105"
-                />
-
-                <div className="absolute inset-0 bg-black/20"></div>
-
-                <div className="absolute inset-x-0 bottom-0 p-5">
-
-                  <h2 className="pr-12 text-xl font-bold text-white">
-                    IT Support and Maintenance
-                  </h2>
-
-                </div>
-
-                <Link
-                  href="/services/it-support-maintenance"
-                  className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-green-600 text-xl font-bold text-white hover:bg-green-700"
-                >
-                  →
-                </Link>
-
-              </div>
-
-            </div>
-
-          </div>
+          )}
 
         </div>
 
       </section>
 
 
-      {/* ================================================= */}
-      {/* CAREERS */}
-      {/* ================================================= */}
+      {/* ================= CAREERS ================= */}
 
       <section
         id="careers"
         className="w-full bg-white scroll-mt-16"
       >
 
-        {/* FIRST CAREERS PART */}
-
         <div className="w-full min-h-screen flex items-center px-8 py-20">
 
           <div className="max-w-6xl mx-auto w-full grid grid-cols-2 gap-12 items-center">
-
-            {/* CONTENT */}
 
             <div>
 
@@ -696,7 +523,6 @@ export default function Home() {
 
               </p>
 
-
               <div className="flex gap-4 mt-8">
 
                 <div className="bg-[#fafafa] border border-gray-200 rounded-xl px-5 py-4">
@@ -710,7 +536,6 @@ export default function Home() {
                   </p>
 
                 </div>
-
 
                 <div className="bg-[#fafafa] border border-gray-200 rounded-xl px-5 py-4">
 
@@ -728,27 +553,20 @@ export default function Home() {
 
             </div>
 
-
-            {/* IMAGE */}
-
-            <div className="w-full h-[400px]">
-
-              <Image
-                src="/careers.png"
-                alt="Careers"
-                width={700}
-                height={500}
-                className="w-full h-full object-cover rounded-xl"
-              />
-
-            </div>
+            <Image
+              src="/careers.png"
+              alt="Careers"
+              width={700}
+              height={500}
+              className="w-full h-[400px] object-cover rounded-xl"
+            />
 
           </div>
 
         </div>
 
 
-        {/* LIFE @ SIMCASYS */}
+        {/* ================= LIFE @ SIMCASYS ================= */}
 
         <div className="w-full bg-[#fffdf8] min-h-screen px-8 py-20">
 
@@ -758,101 +576,38 @@ export default function Home() {
               LIFE @ SIMCASYS
             </p>
 
-
             <div className="grid grid-cols-3 gap-7">
 
-              {/* BOX 1 */}
+              {life.map(([image, title, text]) => (
 
-              <div className="bg-white rounded-2xl overflow-hidden shadow-sm">
+                <div
+                  key={title}
+                  className="bg-white rounded-2xl overflow-hidden shadow-sm"
+                >
 
-                <Image
-                  src="/life1.jpeg"
-                  alt="Restart with Simcasys"
-                  width={600}
-                  height={450}
-                  className="w-full h-[240px] object-cover"
-                />
+                  <Image
+                    src={image}
+                    alt={title}
+                    width={600}
+                    height={450}
+                    className="w-full h-[240px] object-cover"
+                  />
 
-                <div className="p-6">
+                  <div className="p-6">
 
-                  <h3 className="text-2xl font-bold text-black mb-4">
-                    Restart with Simcasys
-                  </h3>
+                    <h3 className="text-2xl font-bold text-black mb-4">
+                      {title}
+                    </h3>
 
-                  <p className="text-green-600 leading-7">
+                    <p className="text-green-600 leading-7">
+                      {text}
+                    </p>
 
-                    Restart with Simcasys is a launchpad for professionals.
-                    This is an opportunity to learn new skills and build
-                    digital capabilities in the latest and emerging
-                    technologies.
-
-                  </p>
-
-                </div>
-
-              </div>
-
-
-              {/* BOX 2 */}
-
-              <div className="bg-white rounded-2xl overflow-hidden shadow-sm">
-
-                <Image
-                  src="/life2.jpeg"
-                  alt="Learning Experience"
-                  width={600}
-                  height={450}
-                  className="w-full h-[240px] object-cover"
-                />
-
-                <div className="p-6">
-
-                  <h3 className="text-2xl font-bold text-black mb-4">
-                    LEARNING EXPERIENCE (LEX)
-                  </h3>
-
-                  <p className="text-green-600 leading-7">
-
-                    We hire minds that think and hearts that care. Our
-                    employees grow into leaders, not just roles. That’s how
-                    Simcasys moves forward.
-
-                  </p>
+                  </div>
 
                 </div>
 
-              </div>
-
-
-              {/* BOX 3 */}
-
-              <div className="bg-white rounded-2xl overflow-hidden shadow-sm">
-
-                <Image
-                  src="/life3.jpg"
-                  alt="Culture"
-                  width={600}
-                  height={450}
-                  className="w-full h-[240px] object-cover"
-                />
-
-                <div className="p-6">
-
-                  <h3 className="text-2xl font-bold text-black mb-4">
-                    CULTURE
-                  </h3>
-
-                  <p className="text-green-600 leading-7">
-
-                    A culture that encourages learning and innovation.
-                    Employees grow through teamwork and shared goals.
-                    Success is built together.
-
-                  </p>
-
-                </div>
-
-              </div>
+              ))}
 
             </div>
 
@@ -863,9 +618,7 @@ export default function Home() {
       </section>
 
 
-      {/* ================================================= */}
-      {/* BLOGS */}
-      {/* ================================================= */}
+      {/* ================= BLOGS ================= */}
 
       <section
         id="blogs"
@@ -873,8 +626,6 @@ export default function Home() {
       >
 
         <div className="max-w-6xl mx-auto w-full grid grid-cols-2 gap-12 items-center">
-
-          {/* CONTENT */}
 
           <div>
 
@@ -903,29 +654,20 @@ export default function Home() {
 
           </div>
 
-
-          {/* IMAGE */}
-
-          <div className="w-full h-[400px]">
-
-            <Image
-              src="/blog.jpg"
-              alt="Simcasys Blogs"
-              width={700}
-              height={500}
-              className="w-full h-full object-cover rounded-xl"
-            />
-
-          </div>
+          <Image
+            src="/blog.jpg"
+            alt="Simcasys Blogs"
+            width={700}
+            height={500}
+            className="w-full h-[400px] object-cover rounded-xl"
+          />
 
         </div>
 
       </section>
 
 
-      {/* ================================================= */}
-      {/* CONTACT US */}
-      {/* ================================================= */}
+      {/* ================= CONTACT ================= */}
 
       <section
         id="contact"
@@ -933,8 +675,6 @@ export default function Home() {
       >
 
         <div className="max-w-6xl mx-auto w-full">
-
-          {/* HEADING */}
 
           <div className="text-center mb-10">
 
@@ -960,11 +700,7 @@ export default function Home() {
           </div>
 
 
-          {/* CONTACT */}
-
           <div className="grid grid-cols-2 gap-12 items-center">
-
-            {/* FORM */}
 
             <div className="bg-white rounded-2xl p-8 shadow-sm">
 
@@ -974,13 +710,11 @@ export default function Home() {
                 className="w-full border border-gray-200 rounded-lg px-4 py-3 mb-4 outline-none focus:border-green-500"
               />
 
-
               <input
                 type="email"
                 placeholder="Your Email"
                 className="w-full border border-gray-200 rounded-lg px-4 py-3 mb-4 outline-none focus:border-green-500"
               />
-
 
               <div className="flex gap-2 mb-4">
 
@@ -996,17 +730,15 @@ export default function Home() {
 
               </div>
 
-
               <textarea
                 placeholder="Your Message"
                 rows={6}
                 className="w-full border border-gray-200 rounded-lg px-4 py-3 mb-4 outline-none focus:border-green-500 resize-none"
               />
 
-
               <button
                 type="button"
-                className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition"
+                className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700"
               >
                 Send Message
               </button>
@@ -1014,19 +746,13 @@ export default function Home() {
             </div>
 
 
-            {/* IMAGE */}
-
-            <div className="w-full h-[450px]">
-
-              <Image
-                src="/contact.jpg"
-                alt="Contact Us"
-                width={700}
-                height={500}
-                className="w-full h-full object-cover rounded-xl"
-              />
-
-            </div>
+            <Image
+              src="/contact.jpg"
+              alt="Contact Us"
+              width={700}
+              height={500}
+              className="w-full h-[450px] object-cover rounded-xl"
+            />
 
           </div>
 

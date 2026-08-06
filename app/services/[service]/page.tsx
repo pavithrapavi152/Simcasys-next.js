@@ -74,27 +74,12 @@ export default async function ServiceDetail({
 
   const currentService = services[service];
 
-  /* SERVICE NOT FOUND */
-
   if (!currentService) {
     return (
-      <main className="min-h-screen w-full bg-[#fffdf7] flex items-center justify-center">
-
-        <div className="text-center">
-
-          <h1 className="text-3xl font-bold text-black">
-            Service Not Found
-          </h1>
-
-          <Link
-            href="/services"
-            className="inline-block mt-6 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700"
-          >
-            Back to Services
-          </Link>
-
-        </div>
-
+      <main className="min-h-screen bg-[#fffdf7] flex items-center justify-center">
+        <h1 className="text-3xl font-bold">
+          Service Not Found
+        </h1>
       </main>
     );
   }
@@ -102,11 +87,9 @@ export default async function ServiceDetail({
   return (
     <main className="min-h-screen w-full bg-[#fffdf7] px-8 py-12">
 
-      {/* ==========================================
-          COMMON SERVICES HEADING
-      ========================================== */}
+      {/* SERVICES HEADING */}
 
-      <div className="max-w-7xl mx-auto mb-8">
+      <div className="max-w-6xl mx-auto mb-8">
 
         <h1 className="text-4xl font-bold leading-tight">
 
@@ -123,38 +106,28 @@ export default async function ServiceDetail({
       </div>
 
 
-      {/* ==========================================
-          WHITE SERVICE CONTENT BOX
-      ========================================== */}
+      {/* SERVICE DETAIL */}
 
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-6xl mx-auto">
 
-        <div className="relative bg-white rounded-2xl shadow-sm p-10">
+        <div className="relative bg-white rounded-2xl shadow-sm p-8">
 
-
-          {/* ==========================================
-              BLACK MULTIPLICATION / CLOSE BUTTON
-          ========================================== */}
+          {/* MULTIPLICATION BUTTON */}
 
           <Link
             href="/#services"
-            aria-label="Close service details"
+            aria-label="Close service"
             className="absolute top-5 right-5 w-9 h-9 flex items-center justify-center rounded-full text-black text-2xl font-light hover:bg-gray-100 transition"
           >
             ×
           </Link>
 
 
-          {/* ==========================================
-              IMAGE + CONTENT
-          ========================================== */}
+          {/* IMAGE + CONTENT */}
 
           <div className="min-h-[550px] grid grid-cols-2 gap-12 items-center">
 
-
-            {/* ==========================================
-                IMAGE
-            ========================================== */}
+            {/* IMAGE */}
 
             <div className="w-full h-[430px]">
 
@@ -169,13 +142,9 @@ export default async function ServiceDetail({
             </div>
 
 
-            {/* ==========================================
-                CONTENT
-            ========================================== */}
+            {/* CONTENT */}
 
             <div className="pr-8">
-
-              {/* SERVICE HEADING */}
 
               <h2 className="text-4xl font-bold leading-tight mb-7">
 
@@ -192,13 +161,8 @@ export default async function ServiceDetail({
 
               </h2>
 
-
-              {/* SERVICE DESCRIPTION */}
-
               <p className="text-gray-700 text-lg leading-8">
-
                 {currentService.description}
-
               </p>
 
             </div>

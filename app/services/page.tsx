@@ -48,11 +48,9 @@ export default function Services() {
   return (
     <main className="min-h-screen w-full bg-[#fffdf7] px-8 py-12">
 
-      {/* PAGE CONTENT */}
-
       <div className="mx-auto w-full max-w-7xl">
 
-        {/* HEADING */}
+        {/* PAGE HEADING */}
 
         <div className="mb-10">
 
@@ -82,8 +80,6 @@ export default function Services() {
               className="group relative overflow-hidden rounded-2xl bg-white shadow-sm"
             >
 
-              {/* IMAGE */}
-
               <div className="relative h-[280px] w-full">
 
                 <Image
@@ -93,13 +89,12 @@ export default function Services() {
                   className="object-cover transition duration-500 group-hover:scale-105"
                 />
 
-
-                {/* IMAGE DARK OVERLAY */}
+                {/* DARK OVERLAY */}
 
                 <div className="absolute inset-0 bg-black/20"></div>
 
 
-                {/* HEADING INSIDE IMAGE */}
+                {/* TITLE */}
 
                 <div className="absolute inset-x-0 bottom-0 p-5">
 
@@ -110,7 +105,7 @@ export default function Services() {
                 </div>
 
 
-                {/* GREEN ARROW BUTTON */}
+                {/* GREEN ARROW */}
 
                 <Link
                   href={service.link}
@@ -133,3 +128,4 @@ export default function Services() {
     </main>
   );
 }
+
