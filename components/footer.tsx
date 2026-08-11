@@ -2,7 +2,7 @@ import { MapPin } from "lucide-react";
 import { Globe } from "lucide-react";
 import Linkedin from "@/public/linkedin.png";
 import Image from "next/image";
-import Instagram from "@/public/instaa.png";
+import Instagram from "@/public/instaa.svg";
 
 export default function Footer() {
   return (
@@ -93,20 +93,20 @@ export default function Footer() {
 
         <div>
           <h4 className="text-[18px] font-semibold mb-4">Stay Connected</h4>
-          <div className="space-y-2 text[15px]">
+          <div className="space-y-2 text[15px] flex item-start justify-start gap-6">
             <a
               href="https://www.instagram.com/simcasys"
               className="flex items-center gap-6"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Instagram"
+              aria-label="Instagram"  
             >
               <Image
                 src={Instagram}
                 height={150}
                 width={150}
                 alt="Instagram"
-                className="h-5 w-5"
+                className="h-8 w-8 text-black"
               />
             </a>
             <a
@@ -116,7 +116,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               aria-label="Website"
             >
-              <Globe className="h-5 w-5" />
+              <Globe className="h-8 w-8" />
             </a>
             <a
               href="https://www.linkedin.com/simcasys-private-limited"
@@ -130,7 +130,7 @@ export default function Footer() {
                 width={40}
                 src={Linkedin}
                 alt="Linkedin"
-                className="h-5 w-5"
+                className="h-6 w-6"
               />
             </a>
           </div>
