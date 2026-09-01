@@ -1,35 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
   const router = useRouter();
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
 
-    setLoading(true);
     setError("");
     setSuccess("");
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const response = await fetch("/api/auth/register", {
@@ -37,23 +36,34 @@ export default function RegisterPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name,
+          email,
+          phoneNumber,
+          password,
+        }),
       });
 
       const data = await response.json();
 
-      if (response.ok) {
-        setSuccess(data.message || "Registration successful!");
-
-        // Redirect to login page after 2 seconds
-        setTimeout(() => {
-          router.push("/login");
-        }, 2000);
-      } else {
+      if (!response.ok) {
         setError(data.message || "Registration failed.");
+        return;
       }
+
+      setSuccess(data.message || "Registration successful!");
+
+      setName("");
+      setEmail("");
+      setPhoneNumber("");
+      setPassword("");
+      setConfirmPassword("");
+
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000);
     } catch (error) {
-      console.error(error);
+      console.error("Registration error:", error);
       setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
@@ -61,11 +71,15 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
-        <h1 className="text-3xl font-bold text-center mb-2">Create Account</h1>
+    <main className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
+      <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg">
+        <h1 className="mb-2 text-center text-3xl font-bold">
+          Create Account
+        </h1>
 
-        <p className="text-center text-gray-600 mb-6">Register to continue</p>
+        <p className="mb-6 text-center text-gray-600">
+          Register to continue
+        </p>
 
         {success && (
           <div className="mb-4 rounded bg-green-100 p-3 text-green-700">
@@ -79,70 +93,107 @@ export default function RegisterPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleRegister} className="space-y-4">
           {/* Name */}
-          <div className="mb-4">
-            <label className="block mb-2 font-medium">Full Name</label>
+          <div>
+            <label className="mb-1 block font-medium">
+              Full Name
+            </label>
 
             <input
               type="text"
-              name="name"
               placeholder="Enter your full name"
-              value={formData.name}
-              onChange={handleChange}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               required
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
           </div>
 
           {/* Email */}
-          <div className="mb-4">
-            <label className="block mb-2 font-medium">Email</label>
+          <div>
+            <label className="mb-1 block font-medium">
+              Email
+            </label>
 
             <input
               type="email"
-              name="email"
               placeholder="Enter your email"
-              value={formData.email}
-              onChange={handleChange}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+            />
+          </div>
+
+          {/* Phone Number */}
+          <div>
+            <label className="mb-1 block font-medium">
+              Phone Number
+            </label>
+
+            <input
+              type="tel"
+              placeholder="Enter phone number"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              required
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
           </div>
 
           {/* Password */}
-          <div className="mb-6">
-            <label className="block mb-2 font-medium">Password</label>
+          <div>
+            <label className="mb-1 block font-medium">
+              Password
+            </label>
 
             <input
               type="password"
-              name="password"
-              placeholder="Enter your password"
-              value={formData.password}
-              onChange={handleChange}
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
           </div>
 
+          {/* Confirm Password */}
+          <div>
+            <label className="mb-1 block font-medium">
+              Confirm Password
+            </label>
+
+            <input
+              type="password"
+              placeholder="Confirm your password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+            />
+          </div>
+
+          {/* Register Button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
+            className="w-full rounded-lg bg-green-600 py-3 font-semibold text-white hover:bg-green-700 disabled:cursor-not-allowed disabled:bg-gray-400"
           >
-            {loading ? "Creating Account..." : "SingUp"}
+            {loading ? "Creating Account..." : "Register"}
           </button>
         </form>
 
-        <div className="text-center mt-6">
-          <p>
-            Already have an account?{" "}
-            <Link href="/login" className="text-blue-600 hover:underline">
-              Login
-            </Link>
-          </p>
-        </div>
+        <p className="mt-6 text-center text-sm text-gray-600">
+          Already have an account?{" "}
+          <Link
+            href="/login"
+            className="font-semibold text-green-600 hover:underline"
+          >
+            Login
+          </Link>
+        </p>
       </div>
-    </div>
+    </main>
   );
 }

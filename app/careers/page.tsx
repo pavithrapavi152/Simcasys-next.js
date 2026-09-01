@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 
@@ -59,9 +61,20 @@ export default function Careers() {
         </nav>
       </header>
 
+<<<<<<< HEAD
+
+      {/* ================= CAREERS HERO SECTION ================= */}
+
+=======
+>>>>>>> origin/feature/login-page
       <section className="w-full min-h-[calc(100vh-64px)] bg-white flex items-center justify-center px-8 py-10">
         <div className="max-w-5xl w-full grid grid-cols-2 gap-10 items-center">
+<<<<<<< HEAD
+
+          {/* ================= LEFT SIDE ================= */}
+=======
           {/* LEFT SIDE - CONTENT */}
+>>>>>>> origin/feature/login-page
 
           <div>
             {/* SMALL HEADING */}
@@ -86,6 +99,25 @@ export default function Careers() {
               truly shine.
             </p>
 
+<<<<<<< HEAD
+
+            {/* ================= BOTTOM BOXES ================= */}
+
+            <div className="flex gap-4 mt-7">
+
+              {/* ================= EMAIL RESUME BOX ================= */}
+
+              <a
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@simcasys.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-left bg-[#fafafa] border-2 border-gray-300 rounded-xl px-5 py-4 shadow-sm cursor-pointer hover:border-green-600 hover:bg-green-50 hover:shadow-md transition duration-200 block"
+              >
+
+                <p className="text-gray-500 text-sm">
+                  Email us your resume at
+                </p>
+=======
             {/* BOTTOM BOXES */}
 
             <div className="flex gap-4 mt-7">
@@ -96,12 +128,31 @@ export default function Careers() {
                 className="bg-[#fafafa] border border-gray-200 rounded-xl px-5 py-4 shadow-sm block cursor-pointer hover:shadow-md transition"
               >
                 <p className="text-gray-400 text-sm">Email us your resume at</p>
+>>>>>>> origin/feature/login-page
 
-                <p className="text-black text-base font-semibold mt-1">
+                <p className="text-black text-base font-bold mt-1">
                   contact@simcasys.com
                 </p>
               </Link>
 
+<<<<<<< HEAD
+              </a>
+
+
+              {/* ================= APPLY FOR A JOB ================= */}
+
+              <Link
+                href="/resume"
+                className="bg-[#fafafa] border-2 border-gray-300 rounded-xl px-5 py-4 shadow-sm cursor-pointer hover:border-green-600 hover:bg-green-50 hover:shadow-md transition duration-200 flex items-center justify-center"
+              >
+
+                <span className="text-green-600 text-base font-semibold">
+                  Apply for a Job
+                </span>
+
+              </Link>
+
+=======
               {/* APPLY FOR THE JOB BOX */}
               <div className="bg-[#fafafa] border border-gray-200 rounded-xl px-5 py-4 shadow-sm">
                 <h3 className="text-lg font-bold text-gray-900 mb-2">
@@ -115,10 +166,16 @@ export default function Careers() {
                   Apply Now
                 </Link>
               </div>
+>>>>>>> origin/feature/login-page
             </div>
           </div>
 
+<<<<<<< HEAD
+
+          {/* ================= RIGHT SIDE IMAGE ================= */}
+=======
           {/* RIGHT SIDE - IMAGE */}
+>>>>>>> origin/feature/login-page
 
           <div className="w-full h-[360px]">
             <Image
@@ -132,25 +189,42 @@ export default function Careers() {
         </div>
       </section>
 
+<<<<<<< HEAD
+
+      {/* ================= LIFE @ SIMCASYS ================= */}
+=======
       {/* ================================================= */}
       {/* SECOND SECTION - LIFE @ SIMCASYS */}
       {/* ================================================= */}
+>>>>>>> origin/feature/login-page
 
       <section className="w-full min-h-screen bg-[#fffdf8] px-10 py-12">
         <div className="max-w-6xl mx-auto">
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/feature/login-page
           {/* SMALL TOP HEADING */}
 
           <p className="text-gray-400 text-sm font-medium tracking-wide mb-8">
             LIFE @ SIMCASYS
           </p>
 
+<<<<<<< HEAD
+
+          {/* ================= THREE BOXES ================= */}
+=======
           {/* THREE BOXES */}
+>>>>>>> origin/feature/login-page
 
           <div className="grid grid-cols-3 gap-7">
             {/* ================= BOX 1 ================= */}
 
             <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+<<<<<<< HEAD
+=======
               {/* IMAGE */}
+>>>>>>> origin/feature/login-page
 
               <div className="w-full h-[240px]">
                 <Image
@@ -162,9 +236,14 @@ export default function Careers() {
                 />
               </div>
 
+<<<<<<< HEAD
+              <div className="p-6">
+
+=======
               {/* CONTENT */}
 
               <div className="p-6">
+>>>>>>> origin/feature/login-page
                 <h2 className="text-2xl font-bold text-black mb-4">
                   Restart with Simcasys
                 </h2>
@@ -180,7 +259,10 @@ export default function Careers() {
             {/* ================= BOX 2 ================= */}
 
             <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+<<<<<<< HEAD
+=======
               {/* IMAGE */}
+>>>>>>> origin/feature/login-page
 
               <div className="w-full h-[240px]">
                 <Image
@@ -192,9 +274,14 @@ export default function Careers() {
                 />
               </div>
 
+<<<<<<< HEAD
+              <div className="p-6">
+
+=======
               {/* CONTENT */}
 
               <div className="p-6">
+>>>>>>> origin/feature/login-page
                 <h2 className="text-2xl font-bold text-black mb-4">
                   LEARNING EXPERIENCE (LEX)
                 </h2>
@@ -210,7 +297,10 @@ export default function Careers() {
             {/* ================= BOX 3 ================= */}
 
             <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+<<<<<<< HEAD
+=======
               {/* IMAGE */}
+>>>>>>> origin/feature/login-page
 
               <div className="w-full h-[240px]">
                 <Image
@@ -222,10 +312,18 @@ export default function Careers() {
                 />
               </div>
 
+<<<<<<< HEAD
+              <div className="p-6">
+
+                <h2 className="text-2xl font-bold text-black mb-4">
+                  CULTURE
+                </h2>
+=======
               {/* CONTENT */}
 
               <div className="p-6">
                 <h2 className="text-2xl font-bold text-black mb-4">CULTURE</h2>
+>>>>>>> origin/feature/login-page
 
                 <p className="text-green-600 text-base leading-7">
                   A culture that encourages learning and innovation. Employees
@@ -234,9 +332,17 @@ export default function Careers() {
                 </p>
               </div>
             </div>
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/feature/login-page
           </div>
         </div>
       </section>
     </main>
   );
 }
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/feature/login-page

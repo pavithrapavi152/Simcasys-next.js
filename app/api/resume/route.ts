@@ -8,26 +8,63 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
 
-    const fullName = formData.get("fullName") as string;
-    const email = formData.get("email") as string;
-    const phone = formData.get("phone") as string;
-    const jobRole = formData.get("jobRole") as string;
+    const fullName = formData.get("fullName")?.toString().trim();
+    const name = formData.get("name")?.toString().trim();
 
-    const resume = formData.get("resume") as File | null;
+    const email = formData.get("email")?.toString().trim();
+    const phone = formData.get("phone")?.toString().trim();
+    const jobRole = formData.get("jobRole")?.toString().trim();
 
-    const db = await connectDB();
+    // Support both "fullName" and "name"
+    const applicantName = fullName || name;
+
+    const resume = formData.get("resume");
 
     // Validation
-    if (!fullName || !email || !phone || !jobRole || !resume) {
+    if (!applicantName || !email || !phone || !resume) {
       return NextResponse.json(
         {
           success: false,
-          message: "All fields are required",
+          message: "Name, email, phone and resume are required",
         },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
+    if (!(resume instanceof File)) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Please upload a valid resume file",
+        },
+        { status: 400 }
+      );
+    }
+
+    // Maximum 5 MB
+    const maxFileSize = 5 * 1024 * 1024;
+
+    if (resume.size === 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Please select a resume file",
+        },
+        { status: 400 }
+      );
+    }
+
+    if (resume.size > maxFileSize) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Maximum file size is 5 MB",
+        },
+        { status: 400 }
+      );
+    }
+
+    // Only PDF
     const isPdf =
       resume.type === "application/pdf" ||
       resume.name.toLowerCase().endsWith(".pdf");
@@ -38,18 +75,7 @@ export async function POST(request: Request) {
           success: false,
           message: "Only PDF files are allowed",
         },
-        { status: 400 },
-      );
-    }
-
-    // Maximum 5 MB
-    if (resume.size > 5 * 1024 * 1024) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Maximum file size is 5 MB",
-        },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -60,83 +86,106 @@ export async function POST(request: Request) {
     // Unique filename
     const fileName = `resume-${Date.now()}-${resume.name}`;
 
-    // Blob Client
-    const blockBlobClient = containerClient.getBlockBlobClient(fileName);
+    // Upload to Azure Blob Storage
+    const blockBlobClient =
+      containerClient.getBlockBlobClient(fileName);
 
-    // Upload PDF
     await blockBlobClient.uploadData(buffer, {
       blobHTTPHeaders: {
         blobContentType: "application/pdf",
       },
     });
 
-    // Blob URL
     const resumeUrl = blockBlobClient.url;
 
+    // Connect to database
+    const db = await connectDB();
+
+    // Save resume URL against the user's email
     await db
       .request()
       .input("email", sql.NVarChar, email)
-      .input("resumeUrl", sql.NVarChar, resumeUrl).query(`
+      .input("resumeUrl", sql.NVarChar, resumeUrl)
+      .query(`
         UPDATE Users
         SET ResumeUrl = @resumeUrl
         WHERE Email = @email
       `);
 
+    // Send email to admin
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
-      to: process.env.ADMIN_EMAIL, // Example: contact@simcasys.com
-      subject: "New Resume Received",
+      to: process.env.ADMIN_EMAIL,
+      subject: `New Resume Received - ${applicantName}`,
       html: `
-    <h2>New Resume Received</h2>
+        <h2>New Resume Received</h2>
 
-    <p><strong>Name:</strong> ${fullName}</p>
-    <p><strong>Email:</strong> ${email}</p>
-    <p><strong>Phone:</strong> ${phone}</p>
-    <p><strong>Job Role:</strong> ${jobRole}</p>
+        <p><strong>Name:</strong> ${applicantName}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        ${
+          jobRole
+            ? `<p><strong>Job Role:</strong> ${jobRole}</p>`
+            : ""
+        }
 
-    <p>
-      <strong>Resume:</strong>
-      <a href="${resumeUrl}" target="_blank">View Resume</a>
-    </p>
+        <p>
+          <strong>Resume:</strong>
+          <a href="${resumeUrl}" target="_blank">
+            View Resume
+          </a>
+        </p>
 
-    <hr>
+        <hr>
 
-    <p>A new candidate has submitted a resume through the SimcaSys Careers page.</p>
-  `,
+        <p>
+          A new candidate has submitted a resume
+          through the SimcaSys Careers page.
+        </p>
+      `,
     });
 
-    // =========================
-    // Email to User
-    // =========================
+    // Send confirmation email to applicant
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
       subject: "We Have Received Your Resume",
       html: `
-    <h2>Hello ${fullName},</h2>
+        <h2>Hello ${applicantName},</h2>
 
-    <p>Thank you for applying to <strong>SimcaSys Pvt Ltd</strong>.</p>
+        <p>
+          Thank you for applying to
+          <strong>SimcaSys Pvt Ltd</strong>.
+        </p>
 
-    <p>Your resume has been received successfully.</p>
+        <p>
+          Your resume has been received successfully.
+        </p>
 
-    <h3>Application Details</h3>
+        <h3>Application Details</h3>
 
-    <p><strong>Name:</strong> ${fullName}</p>
-    <p><strong>Email:</strong> ${email}</p>
-    <p><strong>Phone:</strong> ${phone}</p>
-    <p><strong>Job Role:</strong> ${jobRole}</p>
+        <p><strong>Name:</strong> ${applicantName}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        ${
+          jobRole
+            ? `<p><strong>Job Role:</strong> ${jobRole}</p>`
+            : ""
+        }
 
-    <br>
+        <p>
+          Our recruitment team will review your application.
+          If your profile matches our requirements,
+          we will contact you.
+        </p>
 
-    <p>Our recruitment team will review your application. If your profile matches our requirements, we will contact you.</p>
+        <p>
+          Thank you for your interest in SimcaSys.
+        </p>
 
-    <p>Thank you for your interest in SimcaSys.</p>
-
-    <br>
-
-    <p>Regards,</p>
-    <p><strong>SimcaSys Pvt Ltd</strong></p>
-  `,
+        <p>Regards,<br />
+        <strong>SimcaSys Pvt Ltd</strong></p>
+      `,
     });
 
     return NextResponse.json(
@@ -145,7 +194,7 @@ export async function POST(request: Request) {
         message: "Resume uploaded successfully",
         resumeUrl,
       },
-      { status: 200 },
+      { status: 200 }
     );
   } catch (error) {
     console.error("Resume Upload Error:", error);
@@ -155,7 +204,7 @@ export async function POST(request: Request) {
         success: false,
         message: "Internal Server Error",
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

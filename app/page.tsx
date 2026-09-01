@@ -73,7 +73,7 @@ const life = [
   [
     "/life2.jpeg",
     "LEARNING EXPERIENCE (LEX)",
-    "We hire minds that think and hearts that care. Our employees grow into leaders, not just roles. That's how Simcasys moves forward.",
+    "We hire minds that think and hearts that care. Our employees grow into leaders, not roles. That's how Simcasys moves forward.",
   ],
   [
     "/life3.jpg",
@@ -87,8 +87,9 @@ export default function Home() {
 
   const [wordIndex, setWordIndex] = useState(0);
 
-  // Stores the service currently opened
-  const [selectedService, setSelectedService] = useState<number | null>(null);
+  const [selectedService, setSelectedService] = useState<number | null>(
+    null
+  );
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -100,11 +101,19 @@ export default function Home() {
 
   return (
     <main className="w-full min-h-screen scroll-smooth">
-      {/* ================= HEADER ================= */}
+
+      {/* ========================================================= */}
+      {/* HEADER */}
+      {/* ========================================================= */}
 
       <header className="fixed top-0 left-0 z-50 w-full bg-white shadow-md">
+
         <div className="w-full h-16 px-8 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+
+          {/* LOGO */}
+
+          <Link href="/" className="flex items-center gap-3">
+
             <Image
               src="/simcasys.svg"
               alt="SIMCASYS Logo"
@@ -113,10 +122,17 @@ export default function Home() {
               className="w-[50px] h-auto object-contain"
             />
 
-            <span className="text-xl font-bold text-black">SIMCASYS</span>
-          </div>
+            <span className="text-xl font-bold text-black">
+              SIMCASYS
+            </span>
+
+          </Link>
+
+
+          {/* NAVIGATION */}
 
           <nav className="flex items-center gap-7">
+
             {menu.map(([name, href]) => (
               <Link
                 key={name}
@@ -126,11 +142,16 @@ export default function Home() {
                 {name}
               </Link>
             ))}
+
           </nav>
         </div>
+
       </header>
 
-      {/* ================= HOME ================= */}
+
+      {/* ========================================================= */}
+      {/* HOME */}
+      {/* ========================================================= */}
 
       <section
         id="home"
@@ -153,13 +174,18 @@ export default function Home() {
             <span className="text-green-400"> Real Solutions</span>
           </h1>
 
+
           <div className="mt-5 h-10 flex items-center justify-center">
             <span className="text-orange-400 font-semibold text-xl">
               {words[wordIndex]}
             </span>
           </div>
 
-          <p className="text-xl text-white">SIMCASYS TECHNOLOGIES</p>
+
+          <p className="text-xl text-white">
+            SIMCASYS TECHNOLOGIES
+          </p>
+
 
           <div className="mt-8 flex justify-center gap-5">
             <Link
@@ -177,11 +203,21 @@ export default function Home() {
             </Link>
           </div>
         </div>
+
       </section>
 
-      {/* ================= ABOUT ================= */}
 
-      <section id="about" className="w-full bg-white px-8 py-20 scroll-mt-16">
+      {/* ========================================================= */}
+      {/* ABOUT */}
+      {/* ========================================================= */}
+
+      <section
+        id="about"
+        className="w-full bg-white px-8 py-20 scroll-mt-16"
+      >
+
+        {/* ================= MISSION ================= */}
+
         <div className="max-w-6xl mx-auto min-h-screen flex items-center">
           <div className="w-full grid grid-cols-2 gap-12 items-center">
             <Image
@@ -217,7 +253,11 @@ export default function Home() {
               </p>
             </div>
           </div>
+
         </div>
+
+
+        {/* ================= CULTURE ================= */}
 
         <div className="max-w-6xl mx-auto min-h-screen flex items-center">
           <div className="w-full grid grid-cols-2 gap-12 items-center">
@@ -255,6 +295,7 @@ export default function Home() {
               className="w-full h-[420px] object-cover rounded-xl"
             />
           </div>
+
         </div>
       </section>
 
@@ -271,9 +312,8 @@ export default function Home() {
             <span className="block text-green-600">INDUSTRY EXPERTISE</span>
           </h2>
 
-          {/* ==================================================
-              NORMAL SERVICES CARDS
-              ================================================== */}
+
+          {/* ================= SERVICE CARDS ================= */}
 
           {selectedService === null && (
             <div className="mt-10 grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-4">
@@ -313,14 +353,12 @@ export default function Home() {
             </div>
           )}
 
-          {/* ==================================================
-              SELECTED SERVICE DETAIL
-              ================================================== */}
+
+          {/* ================= SERVICE DETAILS ================= */}
 
           {selectedService !== null && (
             <div className="mt-10">
               <div className="relative bg-white rounded-2xl shadow-sm p-8">
-                {/* MULTIPLICATION / CLOSE BUTTON */}
 
                 <button
                   type="button"
@@ -331,10 +369,8 @@ export default function Home() {
                   ×
                 </button>
 
-                {/* IMAGE + SERVICE CONTENT */}
 
                 <div className="min-h-[550px] grid grid-cols-2 gap-12 items-center">
-                  {/* SERVICE IMAGE */}
 
                   <div className="w-full h-[430px]">
                     <Image
@@ -346,7 +382,6 @@ export default function Home() {
                     />
                   </div>
 
-                  {/* SERVICE DESCRIPTION */}
 
                   <div className="pr-8">
                     <h2 className="text-4xl font-bold leading-tight mb-7">
@@ -373,19 +408,33 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ================= CAREERS ================= */}
 
-      <section id="careers" className="w-full bg-white scroll-mt-16">
+      {/* ========================================================= */}
+      {/* CAREERS */}
+      {/* ========================================================= */}
+
+      <section
+        id="careers"
+        className="w-full bg-white scroll-mt-16"
+      >
+
+        {/* ================= CAREERS MAIN ================= */}
+
         <div className="w-full min-h-screen flex items-center px-8 py-20">
           <div className="max-w-6xl mx-auto w-full grid grid-cols-2 gap-12 items-center">
+
+            {/* ================= LEFT SIDE ================= */}
+
             <div>
               <p className="text-gray-400 text-sm mb-3">Join us</p>
+
 
               <h2 className="text-4xl font-bold leading-tight mb-6">
                 <span className="text-black block">Become part</span>
 
                 <span className="text-green-600 block">of our team</span>
               </h2>
+
 
               <p className="text-gray-600 text-lg leading-8">
                 We foster creativity, respect individuality, and believe in a
@@ -395,28 +444,66 @@ export default function Home() {
                 skills truly shine.
               </p>
 
+
+              {/* ================================================= */}
+              {/* CAREERS BUTTONS */}
+              {/* ================================================= */}
+
               <div className="flex gap-4 mt-8">
-                <div className="bg-[#fafafa] border border-gray-200 rounded-xl px-5 py-4">
-                  <p className="text-gray-400 text-sm">
+
+                {/* ================================================= */}
+                {/* EMAIL BUTTON */}
+                {/* CLICKING THIS OPENS GMAIL IN A NEW TAB */}
+                {/* ================================================= */}
+
+                <a
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@simcasys.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block min-w-[280px] bg-white border-2 border-green-600 rounded-xl px-6 py-5 shadow-md hover:bg-green-600 hover:shadow-lg transition-all duration-300 group cursor-pointer"
+                >
+
+                  <p className="text-gray-500 text-sm group-hover:text-white transition">
                     Email us your resume at
                   </p>
 
-                  <p className="font-semibold text-black">
+                  <p className="font-bold text-black mt-1 group-hover:text-white transition">
                     contact@simcasys.com
                   </p>
-                </div>
 
-                <div className="bg-[#fafafa] border border-gray-200 rounded-xl px-5 py-4">
-                  <p className="font-semibold text-gray-600">
-                    We're a great place
+                </a>
+
+
+                {/* ================================================= */}
+                {/* APPLY FOR A JOB BUTTON */}
+                {/* CLICKING THIS OPENS /resume */}
+                {/* ================================================= */}
+
+                <Link
+                  href="/resume"
+                  className="min-w-[200px] bg-[#fafafa] border border-gray-200 rounded-xl px-5 py-4 shadow-sm hover:border-green-600 hover:bg-green-50 hover:shadow-md transition duration-200 flex flex-col items-center justify-center cursor-pointer"
+                >
+
+                  {/* MAIN HEADING */}
+
+                  <p className="font-semibold text-green-600">
+                    Apply for a Job
                   </p>
 
-                  <p className="font-semibold text-gray-600">
-                    to work certified
+
+                  {/* SMALL TEXT */}
+
+                  <p className="text-sm text-gray-500 mt-1">
+                    Enter your resume
                   </p>
-                </div>
+
+                </Link>
+
               </div>
             </div>
+
+
+            {/* ================= CAREERS IMAGE ================= */}
 
             <Image
               src="/careers.png"
@@ -428,11 +515,15 @@ export default function Home() {
           </div>
         </div>
 
-        {/* ================= LIFE @ SIMCASYS ================= */}
+
+        {/* ========================================================= */}
+        {/* LIFE @ SIMCASYS */}
+        {/* ========================================================= */}
 
         <div className="w-full bg-[#fffdf8] min-h-screen px-8 py-20">
           <div className="max-w-6xl mx-auto">
             <p className="text-gray-400 text-sm mb-8">LIFE @ SIMCASYS</p>
+
 
             <div className="grid grid-cols-3 gap-7">
               {life.map(([image, title, text]) => (
@@ -448,6 +539,7 @@ export default function Home() {
                     className="w-full h-[240px] object-cover"
                   />
 
+
                   <div className="p-6">
                     <h3 className="text-2xl font-bold text-black mb-4">
                       {title}
@@ -462,7 +554,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ================= BLOGS ================= */}
+
+      {/* ========================================================= */}
+      {/* BLOGS */}
+      {/* ========================================================= */}
 
       <section
         id="blogs"
@@ -476,6 +571,7 @@ export default function Home() {
               <span className="text-green-600">Blogs</span>
             </h2>
 
+
             <p className="text-gray-600 text-lg leading-8">
               The IT industry continues to evolve rapidly, driving innovation
               and operational excellence across all sectors. In this blog, we
@@ -484,7 +580,21 @@ export default function Home() {
               transformation strategies to help businesses stay competitive and
               future-ready.
             </p>
+
+
+            <div className="mt-6">
+
+              <Link
+                href="/blogs"
+                className="inline-block rounded-lg bg-green-600 px-6 py-3 font-semibold text-white hover:bg-green-700 transition"
+              >
+                View Details
+              </Link>
+
+            </div>
+
           </div>
+
 
           <Image
             src="/blog.jpg"
@@ -496,7 +606,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ================= CONTACT ================= */}
+
+      {/* ========================================================= */}
+      {/* CONTACT */}
+      {/* ========================================================= */}
 
       <section
         id="contact"
@@ -510,6 +623,7 @@ export default function Home() {
               <span className="text-green-600">Us</span>
             </h2>
 
+
             <p className="text-gray-500 text-sm mt-3 max-w-md mx-auto">
               Have a project idea or need help? Send us a message and our team
               will get back to you shortly.
@@ -517,6 +631,9 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-2 gap-12 items-center">
+
+            {/* CONTACT FORM */}
+
             <div className="bg-white rounded-2xl p-8 shadow-sm">
               <input
                 type="text"
@@ -530,6 +647,7 @@ export default function Home() {
                 className="w-full border border-gray-200 rounded-lg px-4 py-3 mb-4 outline-none focus:border-green-500"
               />
 
+
               <div className="flex gap-2 mb-4">
                 <div className="w-20 border border-gray-200 rounded-lg flex items-center justify-center text-gray-600">
                   +91
@@ -542,11 +660,13 @@ export default function Home() {
                 />
               </div>
 
+
               <textarea
                 placeholder="Your Message"
                 rows={6}
                 className="w-full border border-gray-200 rounded-lg px-4 py-3 mb-4 outline-none focus:border-green-500 resize-none"
               />
+
 
               <button
                 type="button"
@@ -555,6 +675,9 @@ export default function Home() {
                 Send Message
               </button>
             </div>
+
+
+            {/* CONTACT IMAGE */}
 
             <Image
               src="/contact.jpg"
