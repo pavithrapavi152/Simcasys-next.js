@@ -88,9 +88,7 @@ export default function Home() {
   const [wordIndex, setWordIndex] = useState(0);
 
   // Stores the service currently opened
-  const [selectedService, setSelectedService] = useState<number | null>(
-    null
-  );
+  const [selectedService, setSelectedService] = useState<number | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -102,12 +100,10 @@ export default function Home() {
 
   return (
     <main className="w-full min-h-screen scroll-smooth">
-
       {/* ================= HEADER ================= */}
 
       <header className="fixed top-0 left-0 z-50 w-full bg-white shadow-md">
         <div className="w-full h-16 px-8 flex items-center justify-between">
-
           <div className="flex items-center gap-3">
             <Image
               src="/simcasys.svg"
@@ -117,9 +113,7 @@ export default function Home() {
               className="w-[50px] h-auto object-contain"
             />
 
-            <span className="text-xl font-bold text-black">
-              SIMCASYS
-            </span>
+            <span className="text-xl font-bold text-black">SIMCASYS</span>
           </div>
 
           <nav className="flex items-center gap-7">
@@ -133,10 +127,8 @@ export default function Home() {
               </Link>
             ))}
           </nav>
-
         </div>
       </header>
-
 
       {/* ================= HOME ================= */}
 
@@ -144,7 +136,6 @@ export default function Home() {
         id="home"
         className="relative w-full min-h-screen flex items-center justify-center scroll-mt-16"
       >
-
         <Image
           src="/background.png"
           alt="SIMCASYS"
@@ -156,33 +147,21 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/30" />
 
         <div className="relative z-10 text-center px-6">
-
           <h1 className="text-4xl md:text-5xl font-bold">
+            <span className="text-white">Turning Ideas into</span>
 
-            <span className="text-white">
-              Turning Ideas into
-            </span>
-
-            <span className="text-green-400">
-              {" "}Real Solutions
-            </span>
-
+            <span className="text-green-400"> Real Solutions</span>
           </h1>
 
           <div className="mt-5 h-10 flex items-center justify-center">
-
             <span className="text-orange-400 font-semibold text-xl">
               {words[wordIndex]}
             </span>
-
           </div>
 
-          <p className="text-xl text-white">
-            SIMCASYS TECHNOLOGIES
-          </p>
+          <p className="text-xl text-white">SIMCASYS TECHNOLOGIES</p>
 
           <div className="mt-8 flex justify-center gap-5">
-
             <Link
               href="#services"
               className="rounded-lg border-2 border-white bg-white/10 px-7 py-3 font-semibold text-white backdrop-blur-sm hover:bg-white hover:text-black"
@@ -196,24 +175,15 @@ export default function Home() {
             >
               Contact Us
             </Link>
-
           </div>
-
         </div>
       </section>
 
-
       {/* ================= ABOUT ================= */}
 
-      <section
-        id="about"
-        className="w-full bg-white px-8 py-20 scroll-mt-16"
-      >
-
+      <section id="about" className="w-full bg-white px-8 py-20 scroll-mt-16">
         <div className="max-w-6xl mx-auto min-h-screen flex items-center">
-
           <div className="w-full grid grid-cols-2 gap-12 items-center">
-
             <Image
               src="/about1.png"
               alt="Our Mission"
@@ -223,92 +193,58 @@ export default function Home() {
             />
 
             <div className="bg-[#fffaf0] p-8 rounded-xl">
-
               <h2 className="text-4xl font-bold mb-6">
+                <span className="text-black">Our </span>
 
-                <span className="text-black">
-                  Our{" "}
-                </span>
-
-                <span className="text-green-600">
-                  Mission
-                </span>
-
+                <span className="text-green-600">Mission</span>
               </h2>
 
               <p className="text-gray-700 leading-8">
-
-                Simcasys Technologies Pvt. Ltd. is a modern IT solutions
-                company focused on building high-quality digital products.
-                We develop responsive websites, Android & iOS mobile apps,
-                e-commerce platforms, and custom ERP software tailored to
-                business needs.
-
+                Simcasys Technologies Pvt. Ltd. is a modern IT solutions company
+                focused on building high-quality digital products. We develop
+                responsive websites, Android & iOS mobile apps, e-commerce
+                platforms, and custom ERP software tailored to business needs.
                 <br />
                 <br />
-
-                Our team combines smart design, strong engineering, and
-                scalable cloud technologies to help companies launch faster
-                and grow smoother. At Simcasys, we believe technology should
-                be simple, reliable, and built around real users.
-
+                Our team combines smart design, strong engineering, and scalable
+                cloud technologies to help companies launch faster and grow
+                smoother. At Simcasys, we believe technology should be simple,
+                reliable, and built around real users.
                 <br />
                 <br />
-
                 We aim to be a trusted partner for businesses looking to
                 transform their ideas into powerful digital solutions.
-
               </p>
-
             </div>
-
           </div>
         </div>
 
-
         <div className="max-w-6xl mx-auto min-h-screen flex items-center">
-
           <div className="w-full grid grid-cols-2 gap-12 items-center">
-
             <div className="bg-[#fffaf0] p-8 rounded-xl">
-
               <h2 className="text-4xl font-bold mb-6">
+                <span className="text-black">Our </span>
 
-                <span className="text-black">
-                  Our{" "}
-                </span>
-
-                <span className="text-green-600">
-                  Culture
-                </span>
-
+                <span className="text-green-600">Culture</span>
               </h2>
 
               <p className="text-gray-700 leading-8">
-
-                At Simcasys, we foster an environment where open
-                communication, integrity, and empowered decision-making
-                build trust among employees. We are proud to be an equal
-                opportunity employer.
-
+                At Simcasys, we foster an environment where open communication,
+                integrity, and empowered decision-making build trust among
+                employees. We are proud to be an equal opportunity employer.
                 <br />
                 <br />
-
                 We promote technological excellence by investing in modern
-                resources and encouraging continuous learning. Transparency
-                is promoted through open dialogue, visible decision-making
+                resources and encouraging continuous learning. Transparency is
+                promoted through open dialogue, visible decision-making
                 processes, and shared responsibility.
-
                 <br />
                 <br />
-
                 Simcasys is a fun and enjoyable work environment shaped by
                 social events and wellness programs. Together, these values
                 cultivate a vibrant and inclusive workplace, attracting top
                 talent and driving innovation for sustainable success.
-
               </p>
-
             </div>
 
             <Image
@@ -318,12 +254,9 @@ export default function Home() {
               height={500}
               className="w-full h-[420px] object-cover rounded-xl"
             />
-
           </div>
         </div>
-
       </section>
-
 
       {/* ================= SERVICES ================= */}
 
@@ -331,39 +264,25 @@ export default function Home() {
         id="services"
         className="w-full min-h-screen bg-[#fffdf7] px-8 py-20 scroll-mt-16"
       >
-
         <div className="max-w-7xl mx-auto">
-
           <h2 className="text-4xl font-bold leading-tight">
+            <span className="block text-black">SERVICES OFFERED</span>
 
-            <span className="block text-black">
-              SERVICES OFFERED
-            </span>
-
-            <span className="block text-green-600">
-              INDUSTRY EXPERTISE
-            </span>
-
+            <span className="block text-green-600">INDUSTRY EXPERTISE</span>
           </h2>
-
 
           {/* ==================================================
               NORMAL SERVICES CARDS
               ================================================== */}
 
           {selectedService === null && (
-
             <div className="mt-10 grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-4">
-
               {services.map((service, index) => (
-
                 <div
                   key={service.title}
                   className="group relative overflow-hidden rounded-2xl bg-white shadow-sm"
                 >
-
                   <div className="relative h-[280px] w-full">
-
                     <Image
                       src={service.image}
                       alt={service.title}
@@ -374,13 +293,10 @@ export default function Home() {
                     <div className="absolute inset-0 bg-black/20" />
 
                     <div className="absolute inset-x-0 bottom-0 p-5">
-
                       <h2 className="pr-12 text-xl font-bold text-white">
                         {service.title}
                       </h2>
-
                     </div>
-
 
                     {/* GREEN ARROW BUTTON */}
 
@@ -391,29 +307,19 @@ export default function Home() {
                     >
                       →
                     </button>
-
                   </div>
-
                 </div>
-
               ))}
-
             </div>
-
           )}
-
 
           {/* ==================================================
               SELECTED SERVICE DETAIL
               ================================================== */}
 
           {selectedService !== null && (
-
             <div className="mt-10">
-
               <div className="relative bg-white rounded-2xl shadow-sm p-8">
-
-
                 {/* MULTIPLICATION / CLOSE BUTTON */}
 
                 <button
@@ -425,16 +331,12 @@ export default function Home() {
                   ×
                 </button>
 
-
                 {/* IMAGE + SERVICE CONTENT */}
 
                 <div className="min-h-[550px] grid grid-cols-2 gap-12 items-center">
-
-
                   {/* SERVICE IMAGE */}
 
                   <div className="w-full h-[430px]">
-
                     <Image
                       src={services[selectedService].image}
                       alt={services[selectedService].title}
@@ -442,16 +344,12 @@ export default function Home() {
                       height={600}
                       className="w-full h-full object-cover rounded-xl"
                     />
-
                   </div>
-
 
                   {/* SERVICE DESCRIPTION */}
 
                   <div className="pr-8">
-
                     <h2 className="text-4xl font-bold leading-tight mb-7">
-
                       <span className="text-black">
                         {services[selectedService].title.split(" ")[0]}{" "}
                       </span>
@@ -462,71 +360,43 @@ export default function Home() {
                           .slice(1)
                           .join(" ")}
                       </span>
-
                     </h2>
 
                     <p className="text-gray-700 text-lg leading-8">
                       {services[selectedService].description}
                     </p>
-
                   </div>
-
                 </div>
-
               </div>
-
             </div>
-
           )}
-
         </div>
-
       </section>
-
 
       {/* ================= CAREERS ================= */}
 
-      <section
-        id="careers"
-        className="w-full bg-white scroll-mt-16"
-      >
-
+      <section id="careers" className="w-full bg-white scroll-mt-16">
         <div className="w-full min-h-screen flex items-center px-8 py-20">
-
           <div className="max-w-6xl mx-auto w-full grid grid-cols-2 gap-12 items-center">
-
             <div>
-
-              <p className="text-gray-400 text-sm mb-3">
-                Join us
-              </p>
+              <p className="text-gray-400 text-sm mb-3">Join us</p>
 
               <h2 className="text-4xl font-bold leading-tight mb-6">
+                <span className="text-black block">Become part</span>
 
-                <span className="text-black block">
-                  Become part
-                </span>
-
-                <span className="text-green-600 block">
-                  of our team
-                </span>
-
+                <span className="text-green-600 block">of our team</span>
               </h2>
 
               <p className="text-gray-600 text-lg leading-8">
-
-                We foster creativity, respect individuality, and believe
-                in a healthy balance between work and life. Join a team
-                where collaboration drives success and growth feels
-                meaningful. Discover our career opportunities and build a
-                future where your skills truly shine.
-
+                We foster creativity, respect individuality, and believe in a
+                healthy balance between work and life. Join a team where
+                collaboration drives success and growth feels meaningful.
+                Discover our career opportunities and build a future where your
+                skills truly shine.
               </p>
 
               <div className="flex gap-4 mt-8">
-
                 <div className="bg-[#fafafa] border border-gray-200 rounded-xl px-5 py-4">
-
                   <p className="text-gray-400 text-sm">
                     Email us your resume at
                   </p>
@@ -534,11 +404,9 @@ export default function Home() {
                   <p className="font-semibold text-black">
                     contact@simcasys.com
                   </p>
-
                 </div>
 
                 <div className="bg-[#fafafa] border border-gray-200 rounded-xl px-5 py-4">
-
                   <p className="font-semibold text-gray-600">
                     We're a great place
                   </p>
@@ -546,11 +414,8 @@ export default function Home() {
                   <p className="font-semibold text-gray-600">
                     to work certified
                   </p>
-
                 </div>
-
               </div>
-
             </div>
 
             <Image
@@ -560,31 +425,21 @@ export default function Home() {
               height={500}
               className="w-full h-[400px] object-cover rounded-xl"
             />
-
           </div>
-
         </div>
-
 
         {/* ================= LIFE @ SIMCASYS ================= */}
 
         <div className="w-full bg-[#fffdf8] min-h-screen px-8 py-20">
-
           <div className="max-w-6xl mx-auto">
-
-            <p className="text-gray-400 text-sm mb-8">
-              LIFE @ SIMCASYS
-            </p>
+            <p className="text-gray-400 text-sm mb-8">LIFE @ SIMCASYS</p>
 
             <div className="grid grid-cols-3 gap-7">
-
               {life.map(([image, title, text]) => (
-
                 <div
                   key={title}
                   className="bg-white rounded-2xl overflow-hidden shadow-sm"
                 >
-
                   <Image
                     src={image}
                     alt={title}
@@ -594,29 +449,18 @@ export default function Home() {
                   />
 
                   <div className="p-6">
-
                     <h3 className="text-2xl font-bold text-black mb-4">
                       {title}
                     </h3>
 
-                    <p className="text-green-600 leading-7">
-                      {text}
-                    </p>
-
+                    <p className="text-green-600 leading-7">{text}</p>
                   </div>
-
                 </div>
-
               ))}
-
             </div>
-
           </div>
-
         </div>
-
       </section>
-
 
       {/* ================= BLOGS ================= */}
 
@@ -624,34 +468,22 @@ export default function Home() {
         id="blogs"
         className="w-full min-h-screen bg-white flex items-center px-8 py-20 scroll-mt-16"
       >
-
         <div className="max-w-6xl mx-auto w-full grid grid-cols-2 gap-12 items-center">
-
           <div>
-
             <h2 className="text-4xl font-bold mb-6">
+              <span className="text-black">Simcasys </span>
 
-              <span className="text-black">
-                Simcasys{" "}
-              </span>
-
-              <span className="text-green-600">
-                Blogs
-              </span>
-
+              <span className="text-green-600">Blogs</span>
             </h2>
 
             <p className="text-gray-600 text-lg leading-8">
-
               The IT industry continues to evolve rapidly, driving innovation
-              and operational excellence across all sectors. In this blog,
-              we provide professional insights on emerging technologies,
-              software development practices, cloud solutions, cybersecurity,
-              and digital transformation strategies to help businesses stay
-              competitive and future-ready.
-
+              and operational excellence across all sectors. In this blog, we
+              provide professional insights on emerging technologies, software
+              development practices, cloud solutions, cybersecurity, and digital
+              transformation strategies to help businesses stay competitive and
+              future-ready.
             </p>
-
           </div>
 
           <Image
@@ -661,11 +493,8 @@ export default function Home() {
             height={500}
             className="w-full h-[400px] object-cover rounded-xl"
           />
-
         </div>
-
       </section>
-
 
       {/* ================= CONTACT ================= */}
 
@@ -673,37 +502,22 @@ export default function Home() {
         id="contact"
         className="w-full min-h-screen bg-[#f4fbff] flex items-center px-8 py-20 scroll-mt-16"
       >
-
         <div className="max-w-6xl mx-auto w-full">
-
           <div className="text-center mb-10">
-
             <h2 className="text-4xl font-bold">
+              <span className="text-black">Contact </span>
 
-              <span className="text-black">
-                Contact{" "}
-              </span>
-
-              <span className="text-green-600">
-                Us
-              </span>
-
+              <span className="text-green-600">Us</span>
             </h2>
 
             <p className="text-gray-500 text-sm mt-3 max-w-md mx-auto">
-
-              Have a project idea or need help? Send us a message
-              and our team will get back to you shortly.
-
+              Have a project idea or need help? Send us a message and our team
+              will get back to you shortly.
             </p>
-
           </div>
 
-
           <div className="grid grid-cols-2 gap-12 items-center">
-
             <div className="bg-white rounded-2xl p-8 shadow-sm">
-
               <input
                 type="text"
                 placeholder="Your Name"
@@ -717,7 +531,6 @@ export default function Home() {
               />
 
               <div className="flex gap-2 mb-4">
-
                 <div className="w-20 border border-gray-200 rounded-lg flex items-center justify-center text-gray-600">
                   +91
                 </div>
@@ -727,7 +540,6 @@ export default function Home() {
                   placeholder="Phone Number"
                   className="flex-1 border border-gray-200 rounded-lg px-4 py-3 outline-none focus:border-green-500"
                 />
-
               </div>
 
               <textarea
@@ -742,9 +554,7 @@ export default function Home() {
               >
                 Send Message
               </button>
-
             </div>
-
 
             <Image
               src="/contact.jpg"
@@ -753,14 +563,9 @@ export default function Home() {
               height={500}
               className="w-full h-[450px] object-cover rounded-xl"
             />
-
           </div>
-
         </div>
-
       </section>
-
     </main>
   );
 }
-

@@ -1,23 +1,31 @@
-import { connectDB } from "@/lib/db";
 import { NextResponse } from "next/server";
+import bcrypt from "bcrypt";
+import sql from "mssql";
+import { connectDB } from "@/lib/db";
+import { generateToken } from "@/lib/auth";
 
-export async function POST(req: Request) {
+export async function POST(request: Request) {
   try {
-    const { email, password } = await req.json();
+    const { email, password } = await request.json();
+
+    // Validate input
+    if (!email || !password) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Email and Password are required",
+        },
+        { status: 400 },
+      );
+    }
 
     const db = await connectDB();
 
-    //  sql query checking the
-    const result = await db
-      .request()
-
-      .input("Email", email).query(`
-                SELECT *
-                FROM Users
-                WHERE Email=@Email
-            `);
-
-    console.log("sql res", result);
+    const result = await db.request().input("email", sql.VarChar, email).query(`
+        SELECT *
+        FROM admin
+        WHERE Email = @email
+      `);
 
     if (result.recordset.length === 0) {
       return NextResponse.json(
@@ -28,15 +36,36 @@ export async function POST(req: Request) {
         { status: 404 },
       );
     }
-    return NextResponse.json(
-      {
-        sucess: true,
-        message: "Login success",
+
+    const user = result.recordset[0];
+
+    console.log("user", user);
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Invalid Password",
+        },
+        { status: 401 },
+      );
+    }
+
+    const response = NextResponse.json({
+      success: true,
+      message: "Login Successful",
+      user: {
+        id: user.Id,
+        name: user.name,
+        email: user.email,
       },
-      { status: 200 },
-    );
+    });
+
+    return response;
   } catch (error) {
-    console.log("error login", error);
+    console.error("Login API Error:", error);
 
     return NextResponse.json(
       {
