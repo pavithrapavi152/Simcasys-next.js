@@ -29,12 +29,12 @@ export default function Footer() {
           <h4 className="text-[18px] font-semibold mb-4">About Us</h4>
           <ul className="space-y-2 text-[17px]">
             <li>
-              <a href="#aboutUs" className="hover:text-black cursor-pointer">
+              <a href="#about-us" className="hover:text-black cursor-pointer">
                 Our Mission
               </a>
             </li>
             <li>
-              <a href="#culture" className="hover:text-black curson-pointer">
+              <a href="#Culture" className="hover:text-black curson-pointer">
                 Our Culture
               </a>
             </li>
@@ -130,7 +130,7 @@ export default function Footer() {
                 width={40}
                 src={Linkedin}
                 alt="Linkedin"
-                className="h-6 w-6"
+                className="h-7 w-7"
               />
             </a>
           </div>

@@ -1,44 +1,47 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { containerClient } from "@/lib/azureBlob";
+import { transporter } from "@/lib/mail";
+import { connectDB } from "@/lib/db";
+import sql from "mssql";
 
 export async function POST(request: Request) {
   try {
-    // =====================================
-    // 1. GET FORM DATA
-    // =====================================
-
     const formData = await request.formData();
 
+    const fullName = formData.get("fullName")?.toString().trim();
     const name = formData.get("name")?.toString().trim();
+
     const email = formData.get("email")?.toString().trim();
     const phone = formData.get("phone")?.toString().trim();
+    const jobRole = formData.get("jobRole")?.toString().trim();
+
+    // Support both "fullName" and "name"
+    const applicantName = fullName || name;
+
     const resume = formData.get("resume");
 
-    // =====================================
-    // 2. VALIDATE FORM DATA
-    // =====================================
-
-    if (
-      !name ||
-      !email ||
-      !phone ||
-      !(resume instanceof File)
-    ) {
+    // Validation
+    if (!applicantName || !email || !phone || !resume) {
       return NextResponse.json(
         {
           success: false,
-          message:
-            "Name, email, phone and resume are required",
+          message: "Name, email, phone and resume are required",
         },
         { status: 400 }
       );
     }
 
-    // =====================================
-    // 3. CHECK RESUME SIZE
-    // Maximum: 5 MB
-    // =====================================
+    if (!(resume instanceof File)) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Please upload a valid resume file",
+        },
+        { status: 400 }
+      );
+    }
 
+    // Maximum 5 MB
     const maxFileSize = 5 * 1024 * 1024;
 
     if (resume.size === 0) {
@@ -55,177 +58,153 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           success: false,
-          message: "Resume file must be smaller than 5 MB",
+          message: "Maximum file size is 5 MB",
         },
         { status: 400 }
       );
     }
 
-    // =====================================
-    // 4. CHECK FILE TYPE
-    // =====================================
+    // Only PDF
+    const isPdf =
+      resume.type === "application/pdf" ||
+      resume.name.toLowerCase().endsWith(".pdf");
 
-    const allowedTypes = [
-      "application/pdf",
-      "application/msword",
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    ];
-
-    if (!allowedTypes.includes(resume.type)) {
+    if (!isPdf) {
       return NextResponse.json(
         {
           success: false,
-          message: "Only PDF, DOC and DOCX files are allowed",
+          message: "Only PDF files are allowed",
         },
         { status: 400 }
       );
     }
 
-    // =====================================
-    // 5. CHECK EMAIL CONFIGURATION
-    // =====================================
+    // Convert file to Buffer
+    const arrayBuffer = await resume.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
 
-    const emailUser = process.env.EMAIL_USER;
-    const emailPassword = process.env.EMAIL_PASSWORD;
-    const adminEmail = process.env.ADMIN_EMAIL;
+    // Unique filename
+    const fileName = `resume-${Date.now()}-${resume.name}`;
 
-    if (!emailUser || !emailPassword || !adminEmail) {
-      console.error("Email environment variables are missing");
+    // Upload to Azure Blob Storage
+    const blockBlobClient =
+      containerClient.getBlockBlobClient(fileName);
 
-      return NextResponse.json(
-        {
-          success: false,
-          message:
-            "Email server configuration is missing",
-        },
-        { status: 500 }
-      );
-    }
-
-    // =====================================
-    // 6. CONVERT RESUME TO BUFFER
-    // =====================================
-
-    const resumeBuffer = Buffer.from(
-      await resume.arrayBuffer()
-    );
-
-    // =====================================
-    // 7. CREATE GMAIL TRANSPORTER
-    // =====================================
-
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-
-      auth: {
-        user: emailUser,
-        pass: emailPassword,
+    await blockBlobClient.uploadData(buffer, {
+      blobHTTPHeaders: {
+        blobContentType: "application/pdf",
       },
     });
 
-    // =====================================
-    // 8. VERIFY EMAIL CONNECTION
-    // =====================================
+    const resumeUrl = blockBlobClient.url;
 
-    await transporter.verify();
+    // Connect to database
+    const db = await connectDB();
 
-    console.log("Email server connected successfully");
+    // Save resume URL against the user's email
+    await db
+      .request()
+      .input("email", sql.NVarChar, email)
+      .input("resumeUrl", sql.NVarChar, resumeUrl)
+      .query(`
+        UPDATE Users
+        SET ResumeUrl = @resumeUrl
+        WHERE Email = @email
+      `);
 
-    // =====================================
-    // 9. SEND RESUME TO ADMIN
-    // =====================================
-
+    // Send email to admin
     await transporter.sendMail({
-      from: emailUser,
-      to: adminEmail,
+      from: process.env.EMAIL_USER,
+      to: process.env.ADMIN_EMAIL,
+      subject: `New Resume Received - ${applicantName}`,
+      html: `
+        <h2>New Resume Received</h2>
 
-      subject: `New Resume Application - ${name}`,
+        <p><strong>Name:</strong> ${applicantName}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        ${
+          jobRole
+            ? `<p><strong>Job Role:</strong> ${jobRole}</p>`
+            : ""
+        }
 
-      text: `
-New Resume Application
-======================
+        <p>
+          <strong>Resume:</strong>
+          <a href="${resumeUrl}" target="_blank">
+            View Resume
+          </a>
+        </p>
 
-Name: ${name}
-Email: ${email}
-Phone: ${phone}
+        <hr>
 
-A new applicant has submitted a resume through the Simcasys Careers page.
-
-Please find the applicant's resume attached.
+        <p>
+          A new candidate has submitted a resume
+          through the SimcaSys Careers page.
+        </p>
       `,
-
-      attachments: [
-        {
-          filename: resume.name,
-          content: resumeBuffer,
-        },
-      ],
     });
 
-    console.log("Resume email sent to admin");
-
-    // =====================================
-    // 10. SEND CONFIRMATION TO USER
-    // =====================================
-
+    // Send confirmation email to applicant
     await transporter.sendMail({
-      from: emailUser,
+      from: process.env.EMAIL_USER,
       to: email,
+      subject: "We Have Received Your Resume",
+      html: `
+        <h2>Hello ${applicantName},</h2>
 
-      subject:
-        "Resume Submitted Successfully - Simcasys Technologies",
+        <p>
+          Thank you for applying to
+          <strong>SimcaSys Pvt Ltd</strong>.
+        </p>
 
-      text: `
-Dear ${name},
+        <p>
+          Your resume has been received successfully.
+        </p>
 
-Thank you for submitting your resume to Simcasys Technologies.
+        <h3>Application Details</h3>
 
-We have successfully received your application.
+        <p><strong>Name:</strong> ${applicantName}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        ${
+          jobRole
+            ? `<p><strong>Job Role:</strong> ${jobRole}</p>`
+            : ""
+        }
 
-Your submitted details:
+        <p>
+          Our recruitment team will review your application.
+          If your profile matches our requirements,
+          we will contact you.
+        </p>
 
-Name: ${name}
-Email: ${email}
-Phone: ${phone}
+        <p>
+          Thank you for your interest in SimcaSys.
+        </p>
 
-Our team will review your resume and contact you if your profile matches our current opportunities.
-
-Thank you for your interest in Simcasys Technologies.
-
-Regards,
-Simcasys Technologies
+        <p>Regards,<br />
+        <strong>SimcaSys Pvt Ltd</strong></p>
       `,
     });
-
-    console.log("Confirmation email sent to user");
-
-    // =====================================
-    // 11. SUCCESS RESPONSE
-    // =====================================
 
     return NextResponse.json(
       {
         success: true,
-        message:
-          "Resume submitted successfully. Confirmation email sent.",
+        message: "Resume uploaded successfully",
+        resumeUrl,
       },
       { status: 200 }
     );
   } catch (error) {
-    // =====================================
-    // 12. ERROR
-    // =====================================
-
-    console.error("Resume API Error:", error);
+    console.error("Resume Upload Error:", error);
 
     return NextResponse.json(
       {
         success: false,
-        message:
-          "Failed to submit resume. Please try again.",
+        message: "Internal Server Error",
       },
       { status: 500 }
     );
   }
 }
-
