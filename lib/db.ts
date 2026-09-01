@@ -1,46 +1,24 @@
-
 import sql from "mssql";
 
 const config = {
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
+  user: process.env.DB_USER,
 
-    server: process.env.DB_SERVER!,
+  password: process.env.DB_PASSWORD,
 
-    database: process.env.DB_NAME,
+  server: process.env.DB_SERVER!,
 
-    options: {
-        encrypt: true,
-        trustServerCertificate: false,
-    }
+  database: process.env.DB_DATABASE,
+
+  options: {
+    trustServerCertificate: true,
+  },
 };
-
-
 let pool: sql.ConnectionPool | null = null;
 
-
 export async function connectDB() {
+  if (pool) return pool;
 
-    try {
+  pool = await sql.connect(config);
 
-        if (pool) {
-            return pool;
-        }
-
-
-        pool = await sql.connect(config);
-
-        console.log("Azure SQL Connected Successfully");
-
-
-        return pool;
-
-
-    } catch (error) {
-
-        console.log("Database Connection Error:", error);
-
-        throw error;
-
-    }
+  return pool;
 }
