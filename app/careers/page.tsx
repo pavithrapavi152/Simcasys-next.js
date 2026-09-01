@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 
@@ -79,16 +81,13 @@ export default function Careers() {
       </header>
 
 
-      {/* ================================================= */}
-      {/* FIRST CAREERS SECTION */}
-      {/* ================================================= */}
+      {/* ================= CAREERS HERO SECTION ================= */}
 
       <section className="w-full min-h-[calc(100vh-64px)] bg-white flex items-center justify-center px-8 py-10">
 
         <div className="max-w-5xl w-full grid grid-cols-2 gap-10 items-center">
 
-
-          {/* LEFT SIDE - CONTENT */}
+          {/* ================= LEFT SIDE ================= */}
 
           <div>
 
@@ -127,46 +126,49 @@ export default function Careers() {
             </p>
 
 
-            {/* BOTTOM BOXES */}
+            {/* ================= BOTTOM BOXES ================= */}
 
             <div className="flex gap-4 mt-7">
 
+              {/* ================= EMAIL RESUME BOX ================= */}
 
-              {/* EMAIL BOX */}
+              <a
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@simcasys.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-left bg-[#fafafa] border-2 border-gray-300 rounded-xl px-5 py-4 shadow-sm cursor-pointer hover:border-green-600 hover:bg-green-50 hover:shadow-md transition duration-200 block"
+              >
 
-              <div className="bg-[#fafafa] border border-gray-200 rounded-xl px-5 py-4 shadow-sm">
-
-                <p className="text-gray-400 text-sm">
+                <p className="text-gray-500 text-sm">
                   Email us your resume at
                 </p>
 
-                <p className="text-black text-base font-semibold mt-1">
+                <p className="text-black text-base font-bold mt-1">
                   contact@simcasys.com
                 </p>
 
-              </div>
+              </a>
 
 
-              {/* CERTIFICATION BOX */}
+              {/* ================= APPLY FOR A JOB ================= */}
 
-              <div className="bg-[#fafafa] border border-gray-200 rounded-xl px-5 py-4 shadow-sm">
+              <Link
+                href="/resume"
+                className="bg-[#fafafa] border-2 border-gray-300 rounded-xl px-5 py-4 shadow-sm cursor-pointer hover:border-green-600 hover:bg-green-50 hover:shadow-md transition duration-200 flex items-center justify-center"
+              >
 
-                <p className="text-gray-600 text-base font-semibold">
-                  We're a great place
-                </p>
+                <span className="text-green-600 text-base font-semibold">
+                  Apply for a Job
+                </span>
 
-                <p className="text-gray-600 text-base font-semibold">
-                  to work certified
-                </p>
-
-              </div>
+              </Link>
 
             </div>
 
           </div>
 
 
-          {/* RIGHT SIDE - IMAGE */}
+          {/* ================= RIGHT SIDE IMAGE ================= */}
 
           <div className="w-full h-[360px]">
 
@@ -185,14 +187,11 @@ export default function Careers() {
       </section>
 
 
-      {/* ================================================= */}
-      {/* SECOND SECTION - LIFE @ SIMCASYS */}
-      {/* ================================================= */}
+      {/* ================= LIFE @ SIMCASYS ================= */}
 
       <section className="w-full min-h-screen bg-[#fffdf8] px-10 py-12">
 
         <div className="max-w-6xl mx-auto">
-
 
           {/* SMALL TOP HEADING */}
 
@@ -201,7 +200,7 @@ export default function Careers() {
           </p>
 
 
-          {/* THREE BOXES */}
+          {/* ================= THREE BOXES ================= */}
 
           <div className="grid grid-cols-3 gap-7">
 
@@ -209,8 +208,6 @@ export default function Careers() {
             {/* ================= BOX 1 ================= */}
 
             <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-
-              {/* IMAGE */}
 
               <div className="w-full h-[240px]">
 
@@ -224,19 +221,11 @@ export default function Careers() {
 
               </div>
 
-
-              {/* CONTENT */}
-
               <div className="p-6">
-
-                {/* HEADING - BLACK */}
 
                 <h2 className="text-2xl font-bold text-black mb-4">
                   Restart with Simcasys
                 </h2>
-
-
-                {/* CONTENT - GREEN */}
 
                 <p className="text-green-600 text-base leading-7">
 
@@ -256,8 +245,6 @@ export default function Careers() {
 
             <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
 
-              {/* IMAGE */}
-
               <div className="w-full h-[240px]">
 
                 <Image
@@ -270,19 +257,11 @@ export default function Careers() {
 
               </div>
 
-
-              {/* CONTENT */}
-
               <div className="p-6">
-
-                {/* HEADING - BLACK */}
 
                 <h2 className="text-2xl font-bold text-black mb-4">
                   LEARNING EXPERIENCE (LEX)
                 </h2>
-
-
-                {/* CONTENT - GREEN */}
 
                 <p className="text-green-600 text-base leading-7">
 
@@ -301,8 +280,6 @@ export default function Careers() {
 
             <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
 
-              {/* IMAGE */}
-
               <div className="w-full h-[240px]">
 
                 <Image
@@ -315,19 +292,11 @@ export default function Careers() {
 
               </div>
 
-
-              {/* CONTENT */}
-
               <div className="p-6">
-
-                {/* HEADING - BLACK */}
 
                 <h2 className="text-2xl font-bold text-black mb-4">
                   CULTURE
                 </h2>
-
-
-                {/* CONTENT - GREEN */}
 
                 <p className="text-green-600 text-base leading-7">
 
@@ -341,7 +310,6 @@ export default function Careers() {
 
             </div>
 
-
           </div>
 
         </div>
@@ -351,3 +319,4 @@ export default function Careers() {
     </main>
   );
 }
+
