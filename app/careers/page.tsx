@@ -1,242 +1,171 @@
-import Link from "next/link";
-import Image from "next/image";
+"use client";
 
-export default function Careers() {
+import { useState } from "react";
+
+export default function Resume() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!resumeFile) {
+      alert("Please upload your resume");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const formData = new FormData();
+
+      formData.append("fullName", name);
+      formData.append("email", email);
+      formData.append("phone", phone);
+      formData.append("resume", resumeFile);
+
+      // Call POST /api/resume
+      const response = await fetch("/api/resume", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      console.log("API Response:", result);
+
+      if (response.ok && result.success) {
+        alert("Resume submitted successfully!");
+
+        setName("");
+        setEmail("");
+        setPhone("");
+        setResumeFile(null);
+
+        // Clear file input
+        const fileInput = document.getElementById("resume") as HTMLInputElement;
+
+        if (fileInput) {
+          fileInput.value = "";
+        }
+      } else {
+        alert(result.message || "Resume submission failed");
+      }
+    } catch (error) {
+      console.error("Submit Resume Error:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <main className="w-full bg-white">
-      <header className="w-full h-16 bg-white flex items-center justify-between px-8 shadow-sm">
-        <Link href="/" className="flex items-center gap-3">
-          <Image
-            src="/simcasys.svg"
-            alt="SIMCASYS Logo"
-            width={42}
-            height={28}
-            className="object-contain"
-          />
+    <main className="min-h-screen bg-[#fffdf8] px-6 py-16">
+      <div className="text-center mb-10">
+        <p className="text-gray-400 text-sm font-medium mb-3">
+          CAREERS @ SIMCASYS
+        </p>
 
-          <span className="text-lg font-bold text-black">SIMCASYS</span>
-        </Link>
+        <h1 className="text-4xl md:text-5xl font-bold">
+          <span className="text-black">Submit Your </span>
+          <span className="text-green-600">Resume</span>
+        </h1>
 
-        <nav className="flex items-center gap-7">
-          <Link
-            href="/"
-            className="text-black font-semibold hover:text-green-600 transition"
-          >
-            Home
-          </Link>
+        <p className="text-gray-500 mt-4">
+          Join our team and explore career opportunities at Simcasys.
+        </p>
+      </div>
 
-          <Link
-            href="/about-us"
-            className="text-black font-semibold hover:text-green-600 transition"
-          >
-            About Us
-          </Link>
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-8 md:p-10">
+          <h2 className="text-2xl font-bold text-black mb-2">
+            Resume Application
+          </h2>
 
-          <Link
-            href="/services"
-            className="text-black font-semibold hover:text-green-600 transition"
-          >
-            Services
-          </Link>
-
-          <Link href="/careers" className="text-green-600 font-semibold">
-            Careers
-          </Link>
-
-          <Link
-            href="/blogs"
-            className="text-black font-semibold hover:text-green-600 transition"
-          >
-            Blogs
-          </Link>
-
-          <Link
-            href="/contact"
-            className="text-black font-semibold hover:text-green-600 transition"
-          >
-            Contact Us
-          </Link>
-        </nav>
-      </header>
-
-      <section className="w-full min-h-[calc(100vh-64px)] bg-white flex items-center justify-center px-8 py-10">
-        <div className="max-w-5xl w-full grid grid-cols-2 gap-10 items-center">
-          {/* LEFT SIDE - CONTENT */}
-
-          <div>
-            {/* SMALL HEADING */}
-
-            <p className="text-gray-400 text-sm font-medium mb-3">Join us</p>
-
-            {/* MAIN HEADING */}
-
-            <h1 className="text-4xl font-bold leading-tight mb-5">
-              <span className="text-black block">Become part</span>
-
-              <span className="text-green-600 block">of our team</span>
-            </h1>
-
-            {/* PARAGRAPH */}
-
-            <p className="text-gray-600 text-lg leading-8">
-              We foster creativity, respect individuality, and believe in a
-              healthy balance between work and life. Join a team where
-              collaboration drives success and growth feels meaningful. Discover
-              our career opportunities and build a future where your skills
-              truly shine.
-            </p>
-
-            {/* BOTTOM BOXES */}
-
-            <div className="flex gap-4 mt-7">
-              {/* EMAIL BOX */}
-
-              <Link
-                href="/careers"
-                className="bg-[#fafafa] border border-gray-200 rounded-xl px-5 py-4 shadow-sm block cursor-pointer hover:shadow-md transition"
-              >
-                <p className="text-gray-400 text-sm">Email us your resume at</p>
-
-                <p className="text-black text-base font-semibold mt-1">
-                  contact@simcasys.com
-                </p>
-              </Link>
-
-              {/* APPLY FOR THE JOB BOX */}
-              <div className="bg-[#fafafa] border border-gray-200 rounded-xl px-5 py-4 shadow-sm">
-                <h3 className="text-lg font-bold text-gray-900 mb-2">
-                  Apply for the Job
-                </h3>
-
-                <Link
-                  href="/resume"
-                  className="inline-block bg-[#1f7a2a] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#16d830] transition"
-                >
-                  Apply Now
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* RIGHT SIDE - IMAGE */}
-
-          <div className="w-full h-[360px]">
-            <Image
-              src="/careers.png"
-              alt="Careers at Simcasys"
-              width={650}
-              height={500}
-              className="w-full h-full object-cover rounded-xl"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* ================================================= */}
-      {/* SECOND SECTION - LIFE @ SIMCASYS */}
-      {/* ================================================= */}
-
-      <section className="w-full min-h-screen bg-[#fffdf8] px-10 py-12">
-        <div className="max-w-6xl mx-auto">
-          {/* SMALL TOP HEADING */}
-
-          <p className="text-gray-400 text-sm font-medium tracking-wide mb-8">
-            LIFE @ SIMCASYS
+          <p className="text-gray-500 mb-8">
+            Please enter your details and upload your latest resume.
           </p>
 
-          {/* THREE BOXES */}
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Full Name
+              </label>
 
-          <div className="grid grid-cols-3 gap-7">
-            {/* ================= BOX 1 ================= */}
-
-            <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-              {/* IMAGE */}
-
-              <div className="w-full h-[240px]">
-                <Image
-                  src="/life1.jpeg"
-                  alt="Restart with Simcasys"
-                  width={600}
-                  height={450}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {/* CONTENT */}
-
-              <div className="p-6">
-                <h2 className="text-2xl font-bold text-black mb-4">
-                  Restart with Simcasys
-                </h2>
-
-                <p className="text-green-600 text-base leading-7">
-                  Restart with Simcasys is a launchpad for professionals. This
-                  is an opportunity to learn new skills and build digital
-                  capabilities in the latest and emerging technologies.
-                </p>
-              </div>
+              <input
+                type="text"
+                placeholder="Enter your full name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-black outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+              />
             </div>
 
-            {/* ================= BOX 2 ================= */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Email Address
+              </label>
 
-            <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-              {/* IMAGE */}
-
-              <div className="w-full h-[240px]">
-                <Image
-                  src="/life2.jpeg"
-                  alt="Learning Experience"
-                  width={600}
-                  height={450}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {/* CONTENT */}
-
-              <div className="p-6">
-                <h2 className="text-2xl font-bold text-black mb-4">
-                  LEARNING EXPERIENCE (LEX)
-                </h2>
-
-                <p className="text-green-600 text-base leading-7">
-                  We hire minds that think and hearts that care. Our employees
-                  grow into leaders, not just roles. That’s how Simcasys moves
-                  forward.
-                </p>
-              </div>
+              <input
+                type="email"
+                placeholder="Enter your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-black outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+              />
             </div>
 
-            {/* ================= BOX 3 ================= */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Phone Number
+              </label>
 
-            <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-              {/* IMAGE */}
-
-              <div className="w-full h-[240px]">
-                <Image
-                  src="/life3.jpg"
-                  alt="Culture at Simcasys"
-                  width={600}
-                  height={450}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {/* CONTENT */}
-
-              <div className="p-6">
-                <h2 className="text-2xl font-bold text-black mb-4">CULTURE</h2>
-
-                <p className="text-green-600 text-base leading-7">
-                  A culture that encourages learning and innovation. Employees
-                  grow through teamwork and shared goals. Success is built
-                  together.
-                </p>
-              </div>
+              <input
+                type="tel"
+                placeholder="Enter your phone number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-black outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+              />
             </div>
-          </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Upload Resume
+              </label>
+
+              <input
+                id="resume"
+                type="file"
+                accept=".pdf,.doc,.docx"
+                onChange={(e) => {
+                  setResumeFile(e.target.files?.[0] || null);
+                }}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-600 bg-white file:mr-4 file:rounded-md file:border-0 file:bg-green-600 file:px-4 file:py-2 file:text-white file:font-semibold hover:file:bg-green-700"
+              />
+
+              <p className="text-xs text-gray-400 mt-2">
+                Accepted formats: PDF, DOC, DOCX
+              </p>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-green-600 text-white py-3.5 rounded-lg font-semibold text-lg hover:bg-green-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+            >
+              {loading ? "Submitting..." : "Submit Resume"}
+            </button>
+          </form>
         </div>
-      </section>
+      </div>
     </main>
   );
 }

@@ -2,134 +2,186 @@
 
 import { useState } from "react";
 
-export default function CareersPage() {
-  const [fullName, setFullName] = useState("");
+export default function Resume() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
   const [jobRole, setJobRole] = useState("");
-  const [resume, setResume] = useState<File | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!resume) {
+    if (!resumeFile) {
       alert("Please upload your resume");
       return;
     }
 
-    const formData = new FormData();
-
-    formData.append("fullName", fullName);
-    formData.append("email", email);
-    formData.append("phone", phone);
-    formData.append("jobRole", jobRole);
-    formData.append("resume", resume);
-
     try {
+      setLoading(true);
+
+      const formData = new FormData();
+
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("phone", phone);
+      formData.append("resume", resumeFile);
+      formData.append("jobRole", jobRole);
+
+      // Call POST /api/resume
       const response = await fetch("/api/resume", {
         method: "POST",
         body: formData,
       });
 
-      const data = await response.json();
+      const result = await response.json();
 
-      if (response.ok) {
-        alert(data.message);
+      console.log("API Response:", result);
 
-        // Clear Form
-        setFullName("");
+      if (response.ok && result.success) {
+        alert("Resume submitted successfully!");
+
+        setName("");
         setEmail("");
         setPhone("");
         setJobRole("");
-        setResume(null);
+        setResumeFile(null);
+
+        // Clear file input
+        const fileInput = document.getElementById("resume") as HTMLInputElement;
+
+        if (fileInput) {
+          fileInput.value = "";
+        }
       } else {
-        alert(data.message);
+        alert(result.message || "Resume submission failed");
       }
     } catch (error) {
-      console.error("Resume Upload Error:", error);
-      alert("Something went wrong");
+      console.error("Submit Resume Error:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        encType="multipart/form-data"
-        className="w-full max-w-lg rounded-lg bg-white p-6 shadow-lg"
-      >
-        <h1 className="mb-6 text-center text-3xl font-bold">Apply for Job</h1>
+    <main className="min-h-screen bg-[#fffdf8] px-6 py-16">
+      <div className="text-center mb-10">
+        <p className="text-gray-400 text-sm font-medium mb-3">
+          CAREERS @ SIMCASYS
+        </p>
 
-        <div className="mb-4">
-          <label className="block mb-2">Full Name</label>
-          <input
-            type="text"
-            className="w-full rounded border p-2"
-            placeholder="Enter Full Name"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            required
-          />
+        <h1 className="text-4xl md:text-5xl font-bold">
+          <span className="text-black">Submit Your </span>
+          <span className="text-green-600">Resume</span>
+        </h1>
+
+        <p className="text-gray-500 mt-4">
+          Join our team and explore career opportunities at Simcasys.
+        </p>
+      </div>
+
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-8 md:p-10">
+          <h2 className="text-2xl font-bold text-black mb-2">
+            Resume Application
+          </h2>
+
+          <p className="text-gray-500 mb-8">
+            Please enter your details and upload your latest resume.
+          </p>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Full Name
+              </label>
+
+              <input
+                type="text"
+                placeholder="Enter your full name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-black outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Email Address
+              </label>
+
+              <input
+                type="email"
+                placeholder="Enter your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-black outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Phone Number
+              </label>
+
+              <input
+                type="tel"
+                placeholder="Enter your phone number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-black outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Job Role
+              </label>
+
+              <input
+                type="jobrole"
+                placeholder="Enter your job role"
+                value={jobRole}
+                onChange={(e) => setJobRole(e.target.value)}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-black outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Upload Resume
+              </label>
+
+              <input
+                id="resume"
+                type="file"
+                accept=".pdf,.doc,.docx"
+                onChange={(e) => {
+                  setResumeFile(e.target.files?.[0] || null);
+                }}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-600 bg-white file:mr-4 file:rounded-md file:border-0 file:bg-green-600 file:px-4 file:py-2 file:text-white file:font-semibold hover:file:bg-green-700"
+              />
+
+              <p className="text-xs text-gray-400 mt-2">
+                Accepted formats: PDF, DOC, DOCX
+              </p>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-green-600 text-white py-3.5 rounded-lg font-semibold text-lg hover:bg-green-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+            >
+              {loading ? "Submitting..." : "Submit Resume"}
+            </button>
+          </form>
         </div>
-
-        <div className="mb-4">
-          <label className="block mb-2">Email</label>
-          <input
-            type="email"
-            className="w-full rounded border p-2"
-            placeholder="Enter Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block mb-2">Phone</label>
-          <input
-            type="tel"
-            className="w-full rounded border p-2"
-            placeholder="Enter Phone Number"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block mb-2">Job Role</label>
-          <input
-            type="text"
-            className="w-full rounded border p-2"
-            placeholder="Enter Job Role"
-            value={jobRole}
-            onChange={(e) => setJobRole(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="mb-6">
-          <label className="block mb-2">Upload Resume</label>
-          <input
-            type="file"
-            accept=".pdf,.doc,.docx"
-            className="w-full rounded border p-2"
-            onChange={(e) => {
-              if (e.target.files && e.target.files.length > 0) {
-                setResume(e.target.files[0]);
-              }
-            }}
-            required
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="w-full rounded bg-green-600 p-3 text-white hover:bg-green-700"
-        >
-          Submit Application
-        </button>
-      </form>
-    </div>
+      </div>
+    </main>
   );
 }
