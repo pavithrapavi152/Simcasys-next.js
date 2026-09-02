@@ -1,39 +1,96 @@
 "use client";
 
+<<<<<<< HEAD
 import Link from "next/link";
 import Image from "next/image";
+=======
+import { useState } from "react";
 
-export default function Careers() {
+export default function Resume() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!resumeFile) {
+      alert("Please upload your resume");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const formData = new FormData();
+
+      formData.append("fullName", name);
+      formData.append("email", email);
+      formData.append("phone", phone);
+      formData.append("resume", resumeFile);
+
+      // Call POST /api/resume
+      const response = await fetch("/api/resume", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      console.log("API Response:", result);
+
+      if (response.ok && result.success) {
+        alert("Resume submitted successfully!");
+
+        setName("");
+        setEmail("");
+        setPhone("");
+        setResumeFile(null);
+
+        // Clear file input
+        const fileInput = document.getElementById("resume") as HTMLInputElement;
+
+        if (fileInput) {
+          fileInput.value = "";
+        }
+      } else {
+        alert(result.message || "Resume submission failed");
+      }
+    } catch (error) {
+      console.error("Submit Resume Error:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   return (
-    <main className="w-full bg-white">
-      <header className="w-full h-16 bg-white flex items-center justify-between px-8 shadow-sm">
-        <Link href="/" className="flex items-center gap-3">
-          <Image
-            src="/simcasys.svg"
-            alt="SIMCASYS Logo"
-            width={42}
-            height={28}
-            className="object-contain"
-          />
+    <main className="min-h-screen bg-[#fffdf8] px-6 py-16">
+      <div className="text-center mb-10">
+        <p className="text-gray-400 text-sm font-medium mb-3">
+          CAREERS @ SIMCASYS
+        </p>
 
-          <span className="text-lg font-bold text-black">SIMCASYS</span>
-        </Link>
+        <h1 className="text-4xl md:text-5xl font-bold">
+          <span className="text-black">Submit Your </span>
+          <span className="text-green-600">Resume</span>
+        </h1>
 
-        <nav className="flex items-center gap-7">
-          <Link
-            href="/"
-            className="text-black font-semibold hover:text-green-600 transition"
-          >
-            Home
-          </Link>
+        <p className="text-gray-500 mt-4">
+          Join our team and explore career opportunities at Simcasys.
+        </p>
+      </div>
 
-          <Link
-            href="/about-us"
-            className="text-black font-semibold hover:text-green-600 transition"
-          >
-            About Us
-          </Link>
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-8 md:p-10">
+          <h2 className="text-2xl font-bold text-black mb-2">
+            Resume Application
+          </h2>
 
+<<<<<<< HEAD
           <Link
             href="/services"
             className="text-black font-semibold hover:text-green-600 transition"
@@ -254,10 +311,34 @@ export default function Careers() {
                   capabilities in the latest and emerging technologies.
                 </p>
               </div>
+=======
+          <p className="text-gray-500 mb-8">
+            Please enter your details and upload your latest resume.
+          </p>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Full Name
+              </label>
+
+              <input
+                type="text"
+                placeholder="Enter your full name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-black outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+              />
+>>>>>>> feature/resume-upload
             </div>
 
-            {/* ================= BOX 2 ================= */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Email Address
+              </label>
 
+<<<<<<< HEAD
             <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
 <<<<<<< HEAD
 =======
@@ -292,10 +373,24 @@ export default function Careers() {
                   forward.
                 </p>
               </div>
+=======
+              <input
+                type="email"
+                placeholder="Enter your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-black outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+              />
+>>>>>>> feature/resume-upload
             </div>
 
-            {/* ================= BOX 3 ================= */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Phone Number
+              </label>
 
+<<<<<<< HEAD
             <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
 <<<<<<< HEAD
 =======
@@ -337,8 +432,49 @@ export default function Careers() {
 =======
 >>>>>>> origin/feature/login-page
           </div>
+=======
+              <input
+                type="tel"
+                placeholder="Enter your phone number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-black outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Upload Resume
+              </label>
+
+              <input
+                id="resume"
+                type="file"
+                accept=".pdf,.doc,.docx"
+                onChange={(e) => {
+                  setResumeFile(e.target.files?.[0] || null);
+                }}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-600 bg-white file:mr-4 file:rounded-md file:border-0 file:bg-green-600 file:px-4 file:py-2 file:text-white file:font-semibold hover:file:bg-green-700"
+              />
+
+              <p className="text-xs text-gray-400 mt-2">
+                Accepted formats: PDF, DOC, DOCX
+              </p>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-green-600 text-white py-3.5 rounded-lg font-semibold text-lg hover:bg-green-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+            >
+              {loading ? "Submitting..." : "Submit Resume"}
+            </button>
+          </form>
+>>>>>>> feature/resume-upload
         </div>
-      </section>
+      </div>
     </main>
   );
 }

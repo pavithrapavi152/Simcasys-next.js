@@ -8,8 +8,15 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
 
+
     const fullName = formData.get("fullName")?.toString().trim();
     const name = formData.get("name")?.toString().trim();
+
+    const fullName = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const phone = formData.get("phone") as string;
+    const jobRole = formData.get("jobRole") as string;
+
 
     const email = formData.get("email")?.toString().trim();
     const phone = formData.get("phone")?.toString().trim();
@@ -79,6 +86,29 @@ export async function POST(request: Request) {
       );
     }
 
+    // Check existing user
+    const userExists = await db
+      .request()
+      .input("email", sql.NVarChar, email)
+      .input("phone", sql.NVarChar, phone).query(`
+    SELECT *
+    FROM Users
+    WHERE Email = @email
+       OR PhoneNumber = @phone
+  `);
+
+    if (userExists.recordset.length > 0) {
+      const user = userExists.recordset[0];
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: "User with this email or phone number already exists.",
+        },
+        { status: 400 },
+      );
+    }
+
     // Convert file to Buffer
     const arrayBuffer = await resume.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
@@ -98,13 +128,19 @@ export async function POST(request: Request) {
 
     const resumeUrl = blockBlobClient.url;
 
+<<<<<<< HEAD
     // Connect to database
     const db = await connectDB();
 
     // Save resume URL against the user's email
+=======
+    // insert the user
+>>>>>>> feature/resume-upload
     await db
       .request()
+      .input("name", sql.NVarChar, fullName)
       .input("email", sql.NVarChar, email)
+<<<<<<< HEAD
       .input("resumeUrl", sql.NVarChar, resumeUrl)
       .query(`
         UPDATE Users
@@ -117,6 +153,32 @@ export async function POST(request: Request) {
       from: process.env.EMAIL_USER,
       to: process.env.ADMIN_EMAIL,
       subject: `New Resume Received - ${applicantName}`,
+=======
+      .input("phone", sql.NVarChar, phone)
+      .input("jobRole", sql.NVarChar, jobRole)
+      .input("resumeUrl", sql.NVarChar, resumeUrl).query(`
+        INSERT INTO Users (
+          Name,
+          Email,
+          phoneNumber,
+          JobRole,
+          ResumeUrl
+        )
+        VALUES (
+          @name,
+          @email,
+          @phone,
+          @jobRole,
+          @resumeUrl
+        )
+      `);
+
+    // email to  admin
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: process.env.ADMIN_EMAIL,
+      subject: "New Resume Received",
+>>>>>>> feature/resume-upload
       html: `
         <h2>New Resume Received</h2>
 
@@ -145,7 +207,11 @@ export async function POST(request: Request) {
       `,
     });
 
+<<<<<<< HEAD
     // Send confirmation email to applicant
+=======
+    // Email to User
+>>>>>>> feature/resume-upload
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
