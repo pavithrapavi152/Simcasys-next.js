@@ -8,24 +8,17 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
 
-
-    const fullName = formData.get("fullName")?.toString().trim();
-    const name = formData.get("name")?.toString().trim();
-
     const fullName = formData.get("name") as string;
     const email = formData.get("email") as string;
     const phone = formData.get("phone") as string;
     const jobRole = formData.get("jobRole") as string;
 
-
-    const email = formData.get("email")?.toString().trim();
-    const phone = formData.get("phone")?.toString().trim();
-    const jobRole = formData.get("jobRole")?.toString().trim();
-
     // Support both "fullName" and "name"
     const applicantName = fullName || name;
 
     const resume = formData.get("resume");
+
+    const db = await connectDB();
 
     // Validation
     if (!applicantName || !email || !phone || !resume) {
@@ -34,7 +27,7 @@ export async function POST(request: Request) {
           success: false,
           message: "Name, email, phone and resume are required",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -44,7 +37,7 @@ export async function POST(request: Request) {
           success: false,
           message: "Please upload a valid resume file",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -57,7 +50,7 @@ export async function POST(request: Request) {
           success: false,
           message: "Please select a resume file",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -67,7 +60,7 @@ export async function POST(request: Request) {
           success: false,
           message: "Maximum file size is 5 MB",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -82,7 +75,7 @@ export async function POST(request: Request) {
           success: false,
           message: "Only PDF files are allowed",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -117,8 +110,7 @@ export async function POST(request: Request) {
     const fileName = `resume-${Date.now()}-${resume.name}`;
 
     // Upload to Azure Blob Storage
-    const blockBlobClient =
-      containerClient.getBlockBlobClient(fileName);
+    const blockBlobClient = containerClient.getBlockBlobClient(fileName);
 
     await blockBlobClient.uploadData(buffer, {
       blobHTTPHeaders: {
@@ -128,32 +120,11 @@ export async function POST(request: Request) {
 
     const resumeUrl = blockBlobClient.url;
 
-<<<<<<< HEAD
-    // Connect to database
-    const db = await connectDB();
-
-    // Save resume URL against the user's email
-=======
     // insert the user
->>>>>>> feature/resume-upload
     await db
       .request()
       .input("name", sql.NVarChar, fullName)
       .input("email", sql.NVarChar, email)
-<<<<<<< HEAD
-      .input("resumeUrl", sql.NVarChar, resumeUrl)
-      .query(`
-        UPDATE Users
-        SET ResumeUrl = @resumeUrl
-        WHERE Email = @email
-      `);
-
-    // Send email to admin
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: process.env.ADMIN_EMAIL,
-      subject: `New Resume Received - ${applicantName}`,
-=======
       .input("phone", sql.NVarChar, phone)
       .input("jobRole", sql.NVarChar, jobRole)
       .input("resumeUrl", sql.NVarChar, resumeUrl).query(`
@@ -178,18 +149,13 @@ export async function POST(request: Request) {
       from: process.env.EMAIL_USER,
       to: process.env.ADMIN_EMAIL,
       subject: "New Resume Received",
->>>>>>> feature/resume-upload
       html: `
         <h2>New Resume Received</h2>
 
         <p><strong>Name:</strong> ${applicantName}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Phone:</strong> ${phone}</p>
-        ${
-          jobRole
-            ? `<p><strong>Job Role:</strong> ${jobRole}</p>`
-            : ""
-        }
+        ${jobRole ? `<p><strong>Job Role:</strong> ${jobRole}</p>` : ""}
 
         <p>
           <strong>Resume:</strong>
@@ -207,11 +173,7 @@ export async function POST(request: Request) {
       `,
     });
 
-<<<<<<< HEAD
-    // Send confirmation email to applicant
-=======
     // Email to User
->>>>>>> feature/resume-upload
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
@@ -233,11 +195,7 @@ export async function POST(request: Request) {
         <p><strong>Name:</strong> ${applicantName}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Phone:</strong> ${phone}</p>
-        ${
-          jobRole
-            ? `<p><strong>Job Role:</strong> ${jobRole}</p>`
-            : ""
-        }
+        ${jobRole ? `<p><strong>Job Role:</strong> ${jobRole}</p>` : ""}
 
         <p>
           Our recruitment team will review your application.
@@ -260,7 +218,7 @@ export async function POST(request: Request) {
         message: "Resume uploaded successfully",
         resumeUrl,
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Resume Upload Error:", error);
@@ -270,7 +228,7 @@ export async function POST(request: Request) {
         success: false,
         message: "Internal Server Error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
